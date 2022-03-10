@@ -1,4 +1,4 @@
-using AutoServiceHelper.Data;
+using AutoServiceHelper.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
