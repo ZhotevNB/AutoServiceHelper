@@ -6,7 +6,7 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
     public class Part
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }= Guid.NewGuid();
 
         [Required]
         [StringLength(DataConstants.PartNumberLength)]

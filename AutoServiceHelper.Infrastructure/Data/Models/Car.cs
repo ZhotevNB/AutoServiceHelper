@@ -32,6 +32,6 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
         [StringLength(DataConstants.ColorLength)]
         public string Color { get; set; }
 
-        public IEnumerable<Issue> Issues { get; set; }= new HashSet<Issue>();
+        public IList<Issue> Issues { get; set; }= new List<Issue>();
     }
 }
