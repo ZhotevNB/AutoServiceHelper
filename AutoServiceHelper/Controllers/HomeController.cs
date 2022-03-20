@@ -1,4 +1,5 @@
 ﻿using AutoServiceHelper.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -7,9 +8,11 @@ namespace AutoServiceHelper.Controllers
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(SignInManager<IdentityUser> signInManager, ILogger<HomeController> logger)
         {
+            _signInManager = signInManager;
             _logger = logger;
         }
 
@@ -28,7 +31,13 @@ namespace AutoServiceHelper.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-        
-       
+
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
+            return Redirect("/");
+
+        }
     }
 }
