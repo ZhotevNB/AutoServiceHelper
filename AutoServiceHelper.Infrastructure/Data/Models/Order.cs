@@ -25,5 +25,9 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
         public string MechanicId { get; set; }
 
         public OrderStatus Status { get; set; } = OrderStatus.Waiting;
+
+      
+        [Range(DataConstants.OddometerMinValue, DataConstants.OddometerMaxValue)]
+        public int? CarOdometer { get; set; }
     }
 }

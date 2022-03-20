@@ -23,6 +23,10 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
         [ForeignKey(nameof(CarId))]
         public Car Car { get; set; }
 
+        [Required] 
+        [Range(DataConstants.OddometerMinValue,DataConstants.OddometerMaxValue)]
+        public int CarOdometer { get; set; }
+
         public IssueStatus Status { get; set; } = IssueStatus.WaitingForOffer;
 
         

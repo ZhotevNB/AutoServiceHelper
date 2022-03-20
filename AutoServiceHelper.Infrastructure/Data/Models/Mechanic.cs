@@ -7,6 +7,7 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
     public class Mechanic
     {
        [Key]
+       [Required]
        public string UserId { get; set; }
               
 

@@ -24,10 +24,7 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
         [StringLength(DataConstants.VinLength)]
         public string Vin { get; set; }
 
-        [Required]
-        [StringLength(DataConstants.OddometerLength)]
-        public string Oddometer { get; set; }
-
+     
         [Required]
         [StringLength(DataConstants.ColorLength)]
         public string Color { get; set; }
