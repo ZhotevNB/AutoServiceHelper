@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "My Cars ";
+}
+
+<section class="py-5">
+    <div class="container">       
+        <div style="padding: 5%;">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Manifacture</th>
+                        <th scope="col">Model</th>
+                        <th scope="col">VIN</th>
+                        <th scope="col">Year</th>
+                        <th scope="col">Color</th>
+                        <th scope="col">Issues</th>
+                        <th scope="col">Orders</th>
+                    </tr>
+                </thead>
+         
+                     <tbody>
+                    <tr>
+                        <th scope="row">car.Manifacture</th>
+                        <td>car.Model</td>
+                        <td>car.Vin</td>
+                        <td>car.Year</td>
+                        <td>car.Color</td>
+                        <td>
+                            <div class="button-holder">
+                                <a href="/Cars/Issues?carId="Id" class="btn btn-info text-uppercase">Issues</a>
+                            </div>
+                        </td><td>
+                            <div class="button-holder">
+                                <a href="/Cars/Orders?carId="Id" class="btn btn-info text-uppercase">Orders</a>
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+                
+            </table>
+        </div>
+    </div>
+</section>
