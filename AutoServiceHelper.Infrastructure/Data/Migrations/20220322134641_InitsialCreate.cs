@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AutoServiceHelper.Infrastructure.data.Migrations
 {
-    public partial class create : Migration
+    public partial class InitsialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Activity",
+                name: "Activities",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -19,7 +19,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Activity", x => x.Id);
+                    table.PrimaryKey("PK_Activities", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -59,17 +59,6 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CarOwners",
-                columns: table => new
-                {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CarOwners", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -197,27 +186,20 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cars",
+                name: "CarOwners",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Manifacture = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Model = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Year = table.Column<int>(type: "int", nullable: false),
-                    Vin = table.Column<string>(type: "nvarchar(17)", maxLength: 17, nullable: false),
-                    Oddometer = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Color = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CarOwnerUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cars", x => x.Id);
+                    table.PrimaryKey("PK_CarOwners", x => x.UserId);
                     table.ForeignKey(
-                        name: "FK_Cars_CarOwners_CarOwnerUserId",
-                        column: x => x.CarOwnerUserId,
-                        principalTable: "CarOwners",
-                        principalColumn: "UserId");
+                        name: "FK_CarOwners_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -242,27 +224,54 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Issues",
+                name: "UsersInfo",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Type = table.Column<int>(type: "int", nullable: false),
-                    SubmitetByUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SubmitionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CarId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OfferID = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    NickName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ContactInfoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Issues", x => x.Id);
+                    table.PrimaryKey("PK_UsersInfo", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Issues_Cars_CarId",
-                        column: x => x.CarId,
-                        principalTable: "Cars",
+                        name: "FK_UsersInfo_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UsersInfo_ContactsInfo_ContactInfoId",
+                        column: x => x.ContactInfoId,
+                        principalTable: "ContactsInfo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Cars",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Manifacture = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Model = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Year = table.Column<int>(type: "int", nullable: false),
+                    Vin = table.Column<string>(type: "nvarchar(17)", maxLength: 17, nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cars", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cars_CarOwners_UserId",
+                        column: x => x.UserId,
+                        principalTable: "CarOwners",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -276,9 +285,9 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                 {
                     table.PrimaryKey("PK_AutoShopActivity", x => new { x.ActivityId, x.AutoShopId });
                     table.ForeignKey(
-                        name: "FK_AutoShopActivity_Activity_ActivityId",
+                        name: "FK_AutoShopActivity_Activities_ActivityId",
                         column: x => x.ActivityId,
-                        principalTable: "Activity",
+                        principalTable: "Activities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -300,11 +309,90 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                 {
                     table.PrimaryKey("PK_Mechanics", x => x.UserId);
                     table.ForeignKey(
+                        name: "FK_Mechanics_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Mechanics_AutoShops_AutoShopId",
                         column: x => x.AutoShopId,
                         principalTable: "AutoShops",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShopManegers",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AutoShopId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShopManegers", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_ShopManegers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ShopManegers_AutoShops_AutoShopId",
+                        column: x => x.AutoShopId,
+                        principalTable: "AutoShops",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Issues",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    SubmitetByUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SubmitionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CarId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CarOdometer = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OfferID = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Issues", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Issues_Cars_CarId",
+                        column: x => x.CarId,
+                        principalTable: "Cars",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MechanicActivity",
+                columns: table => new
+                {
+                    ActivityId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MechanicActivity", x => new { x.ActivityId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_MechanicActivity_Activities_ActivityId",
+                        column: x => x.ActivityId,
+                        principalTable: "Activities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MechanicActivity_Mechanics_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Mechanics",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -339,6 +427,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                     Offer = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MechanicId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
+                    CarOdometer = table.Column<int>(type: "int", nullable: true),
                     AutoShopId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
@@ -354,30 +443,6 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                         column: x => x.IssueId,
                         principalTable: "Issues",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MechanicActivity",
-                columns: table => new
-                {
-                    ActivityId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MechanicActivity", x => new { x.ActivityId, x.UserId });
-                    table.ForeignKey(
-                        name: "FK_MechanicActivity_Activity_ActivityId",
-                        column: x => x.ActivityId,
-                        principalTable: "Activity",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MechanicActivity_Mechanics_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Mechanics",
-                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -475,9 +540,9 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                 column: "ContactInfoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cars_CarOwnerUserId",
+                name: "IX_Cars_UserId",
                 table: "Cars",
-                column: "CarOwnerUserId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Issues_CarId",
@@ -515,9 +580,24 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                 column: "ShopServiceId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ShopManegers_AutoShopId",
+                table: "ShopManegers",
+                column: "AutoShopId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ShopServices_OfferId",
                 table: "ShopServices",
                 column: "OfferId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsersInfo_ContactInfoId",
+                table: "UsersInfo",
+                column: "ContactInfoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsersInfo_UserId",
+                table: "UsersInfo",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -550,13 +630,16 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                 name: "Parts");
 
             migrationBuilder.DropTable(
+                name: "ShopManegers");
+
+            migrationBuilder.DropTable(
+                name: "UsersInfo");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Activity");
+                name: "Activities");
 
             migrationBuilder.DropTable(
                 name: "Mechanics");
@@ -581,6 +664,9 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
             migrationBuilder.DropTable(
                 name: "CarOwners");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

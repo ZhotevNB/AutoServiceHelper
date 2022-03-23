@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoServiceHelper.Infrastructure.data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220312112810_create")]
-    partial class create
+    [Migration("20220322165113_RemoveCarOwner")]
+    partial class RemoveCarOwner
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,7 +37,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Activity");
+                    b.ToTable("Activities");
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.AutoShop", b =>
@@ -88,9 +88,6 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CarOwnerUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Color")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -106,14 +103,9 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Oddometer")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Vin")
                         .IsRequired()
@@ -125,19 +117,9 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarOwnerUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Cars");
-                });
-
-            modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.CarOwner", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("CarOwners");
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.ContactInfo", b =>
@@ -186,6 +168,9 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                     b.Property<string>("CarId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CarOdometer")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -283,6 +268,9 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                     b.Property<Guid?>("AutoShopId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int?>("CarOdometer")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("IssueId")
                         .HasColumnType("uniqueidentifier");
 
@@ -341,6 +329,21 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                     b.ToTable("Parts");
                 });
 
+            modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.ShopManeger", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("AutoShopId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId");
+
+                    b.HasIndex("AutoShopId");
+
+                    b.ToTable("ShopManegers");
+                });
+
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.ShopService", b =>
                 {
                     b.Property<Guid>("Id")
@@ -372,6 +375,43 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                     b.HasIndex("OfferId");
 
                     b.ToTable("ShopServices");
+                });
+
+            modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.UserInfo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ContactInfoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("NickName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContactInfoId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UsersInfo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -608,9 +648,13 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.Car", b =>
                 {
-                    b.HasOne("AutoServiceHelper.Infrastructure.Data.Models.CarOwner", null)
-                        .WithMany("Cars")
-                        .HasForeignKey("CarOwnerUserId");
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CarOwner")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CarOwner");
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.Issue", b =>
@@ -631,6 +675,14 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                         .HasForeignKey("AutoShopId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.MechanicActivity", b =>
@@ -644,7 +696,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                     b.HasOne("AutoServiceHelper.Infrastructure.Data.Models.Mechanic", "Mechanic")
                         .WithMany("Activities")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Activity");
@@ -683,6 +735,25 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                         .HasForeignKey("ShopServiceId");
                 });
 
+            modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.ShopManeger", b =>
+                {
+                    b.HasOne("AutoServiceHelper.Infrastructure.Data.Models.AutoShop", "AutoShop")
+                        .WithMany()
+                        .HasForeignKey("AutoShopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AutoShop");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.ShopService", b =>
                 {
                     b.HasOne("AutoServiceHelper.Infrastructure.Data.Models.Offer", "Offer")
@@ -692,6 +763,25 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                         .IsRequired();
 
                     b.Navigation("Offer");
+                });
+
+            modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.UserInfo", b =>
+                {
+                    b.HasOne("AutoServiceHelper.Infrastructure.Data.Models.ContactInfo", "ContactInfo")
+                        .WithMany()
+                        .HasForeignKey("ContactInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ContactInfo");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -757,11 +847,6 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.Car", b =>
                 {
                     b.Navigation("Issues");
-                });
-
-            modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.CarOwner", b =>
-                {
-                    b.Navigation("Cars");
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.Issue", b =>

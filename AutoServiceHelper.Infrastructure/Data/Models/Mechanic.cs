@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
+
 
 
 namespace AutoServiceHelper.Infrastructure.Data.Models
@@ -9,7 +11,9 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
        [Key]
        [Required]
        public string UserId { get; set; }
-              
+
+        [ForeignKey(nameof(UserId))]
+        public IdentityUser User { get; set; }
 
         public Guid AutoShopId { get; set; }
 
