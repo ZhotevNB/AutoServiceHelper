@@ -1,4 +1,7 @@
+using AutoServiceHelper.Core.Contracts;
+using AutoServiceHelper.Core.Services;
 using AutoServiceHelper.Infrastructure.Data;
+using AutoServiceHelper.Infrastructure.Data.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,9 +13,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+builder.Services.AddTransient<ICarService, CarServices>();
+builder.Services.AddTransient<IRepository, Repository>();
+
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
-    options.SignIn.RequireConfirmedAccount = true;
+    options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireNonAlphanumeric=false;
     options.Password.RequiredUniqueChars=0;
     options.Password.RequireDigit=false;

@@ -16,6 +16,7 @@
                         <th scope="col">Color</th>
                         <th scope="col">Issues</th>
                         <th scope="col">Orders</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
          
@@ -35,6 +36,11 @@
                         </td><td>
                             <div class="button-holder">
                                 <a href="/Cars/Orders?carId=@car.Id" class="btn btn-info text-uppercase">Orders</a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="button-holder">
+                                <a href="/Cars/AddIssue?carId=@car.Id" class="btn btn-info text-uppercase">Add Issue</a>
                             </div>
                         </td>
                     </tr>
