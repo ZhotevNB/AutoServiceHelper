@@ -7,12 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AutoServiceHelper.Infrastructure\AutoServiceHelper.Infrastructure.csproj" />
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.7" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Contracts\" />
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\AutoServiceHelper.Infrastructure\AutoServiceHelper.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

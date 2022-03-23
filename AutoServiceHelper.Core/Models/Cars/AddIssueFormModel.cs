@@ -14,7 +14,7 @@ namespace AutoServiceHelper.Core.Models.Cars
         public int CarOdometer { get; set; }
           
         [Required]
-        [StringLength(DataConstants.DiscriptionMinLen)]
+        [MinLength(DataConstants.DiscriptionMinLen)]
         public string Description { get; set; }
 
         public IEnumerable<string> ListTypes { get; set; }
