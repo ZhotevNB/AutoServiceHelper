@@ -1,5 +1,6 @@
 ﻿using AutoServiceHelper.Core.Contracts;
 using AutoServiceHelper.Core.Models.Cars;
+using AutoServiceHelper.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -71,7 +72,17 @@ namespace AutoServiceHelper.Controllers
             var user = await userManager.GetUserAsync(User);
             var userId = await userManager.GetUserIdAsync(user);
 
-            carServices.AddIssue(carIssue,carId, userId);
+            var result=carServices.AddIssue(carIssue,carId, userId);
+            if (result== "Invalid Operation")
+            {
+                //must hapand somting to inform user the operation was not succsesful
+                var model = carServices.GetIssueTypes();
+                var Issue = new AddIssueFormModel()
+                {
+                    ListTypes = model
+                };
+                return View(Issue);
+            }
             return RedirectToAction("MyCars");
         }
         public IActionResult FixIssue(string issueId)

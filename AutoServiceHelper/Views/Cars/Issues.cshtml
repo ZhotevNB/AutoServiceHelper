@@ -2,10 +2,14 @@
 @{
     ViewData["Title"] = "Car Issues ";
 }
+<div class="button-group" role="group" aria-label="Button group with nested dropdown">
+    <a href="/Cars/MyCars" class="btn btn-info text-uppercase">Back to Garage</a>
 
-<section class="py-5">
+</div>
+
+<section class="py-2">
     <div class="container">
-        <div style="padding: 5%;">
+        <div style="padding: 1%;">
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
@@ -30,29 +34,31 @@
                             <td>@issue.CarOdometer</td>
                             <td>
                                 <div>
-                                 @issue.Description
+                                    @issue.Description
                                 </div>
                             </td>
                             <td>
-                            @if(!issue.IsFixed){  
-                                 <div class="button-holder">
-                                <a href="/Cars/FixIssue?issueId=@issue.Id" class="btn btn-info text-uppercase">Fix</a>
-                            </div>
-                            }
-                             @if(issue.IsFixed){  
-                                 <div class="button-holder">
-                                <a  class="btn btn-info text-uppercase">Fixed</a>
-                            </div>
-                            }
+                                @if (!issue.IsFixed)
+                                {
+                                    <div class="button-holder">
+                                        <a href="/Cars/FixIssue?issueId=@issue.Id" class="btn btn-info text-uppercase">Fix</a>
+                                    </div>
+                                }
+                                @if (issue.IsFixed)
+                                {
+
+                                    <a class="badge badge-success text-uppercase">Fixed</a>
+                                }
+
                             </td>
-                                
+
                         </tr>
 
                     </tbody>
                 }
             </table>
-           
+
         </div>
     </div>
-   
+
 </section>

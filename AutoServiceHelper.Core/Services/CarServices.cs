@@ -47,6 +47,19 @@ namespace AutoServiceHelper.Core.Services
      
         public string AddIssue(AddIssueFormModel model,string carId,string userId)
         {
+           var milage =repository.All<Issue>()
+                .Where(x => x.CarId == carId)
+                  .OrderByDescending(x => x.SubmitionDate.Date)
+                .OrderByDescending(x => x.SubmitionDate.Hour)
+                .OrderByDescending(x => x.SubmitionDate.Minute)
+                .Select(x=>x.CarOdometer)
+                .FirstOrDefault();
+
+            if (milage>model.CarOdometer)
+            {
+                
+                return "Invalid Operation";
+            }
             repository.Add<Issue>(new Issue
             {
                 Type=model.Type,
