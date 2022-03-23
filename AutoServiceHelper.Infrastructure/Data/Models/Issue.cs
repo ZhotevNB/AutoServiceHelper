@@ -34,6 +34,8 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
 
         public IList<Offer> Offers { get; set; }= new List<Offer>();
 
+        public bool isFixed { get; set; } = false;
+
 
         public string? OfferID { get; set; }
     }

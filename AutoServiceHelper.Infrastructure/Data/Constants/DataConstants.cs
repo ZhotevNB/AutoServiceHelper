@@ -11,6 +11,10 @@
 
         public const int PartNumberLength = 30;
 
+        public const int DiscriptionMinLen = 10;
+        
+
+
 
     }
 }
