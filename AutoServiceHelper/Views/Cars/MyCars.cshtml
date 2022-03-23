@@ -1,4 +1,5 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "My Cars ";
 }
 
@@ -18,25 +19,28 @@
                     </tr>
                 </thead>
          
-                     <tbody>
+                    @foreach (var car in Model)
+                    {
+                         <tbody>
                     <tr>
-                        <th scope="row">car.Manifacture</th>
-                        <td>car.Model</td>
-                        <td>car.Vin</td>
-                        <td>car.Year</td>
-                        <td>car.Color</td>
+                        <th scope="row">@car.Manifacture</th>
+                        <td>@car.Model</td>
+                        <td>@car.Vin</td>
+                        <td>@car.Year</td>
+                        <td>@car.Color</td>
                         <td>
                             <div class="button-holder">
-                                <a href="/Cars/Issues?carId="Id" class="btn btn-info text-uppercase">Issues</a>
+                                <a href="/Cars/Issues?carId=@car.Id" class="btn btn-info text-uppercase">Issues</a>
                             </div>
                         </td><td>
                             <div class="button-holder">
-                                <a href="/Cars/Orders?carId="Id" class="btn btn-info text-uppercase">Orders</a>
+                                <a href="/Cars/Orders?carId=@car.Id" class="btn btn-info text-uppercase">Orders</a>
                             </div>
                         </td>
                     </tr>
 
                 </tbody>
+                    }
                 
             </table>
         </div>
