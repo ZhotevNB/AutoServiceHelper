@@ -11,18 +11,13 @@ namespace AutoServiceHelper.Core.Services
     public class CarServices : ICarService
     {
         private readonly IRepository repository;
-        private readonly SignInManager<IdentityUser> signInManager;
-        private readonly UserManager<IdentityUser> userManager;
+      
 
 
-        public CarServices(IRepository _repository,
-            SignInManager<IdentityUser> _signInManager,
-            UserManager<IdentityUser> _userManager)
+        public CarServices(IRepository _repository )
         {
-
             repository = _repository;
-            signInManager = _signInManager;
-            userManager = _userManager;
+         
         }
 
 
