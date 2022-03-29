@@ -28,5 +28,9 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
         public string LastName { get; init; }
 
         public ContactInfo ContactInfo { get; set; }
+
+        public bool AskToChangeRollMechanic { get; set; } = false;
+
+        public bool AskToChangeRollManager { get; set; } = false;
     }
 }
