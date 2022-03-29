@@ -4,6 +4,7 @@ using AutoServiceHelper.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoServiceHelper.Infrastructure.data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220329075913_updateUsersInfo")]
+    partial class updateUsersInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -390,7 +392,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                     b.Property<bool>("AskToChangeRollMechanic")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("ContactInfoId")
+                    b.Property<int>("ContactInfoId")
                         .HasColumnType("int");
 
                     b.Property<string>("FirstName")
@@ -776,7 +778,9 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
                 {
                     b.HasOne("AutoServiceHelper.Infrastructure.Data.Models.ContactInfo", "ContactInfo")
                         .WithMany()
-                        .HasForeignKey("ContactInfoId");
+                        .HasForeignKey("ContactInfoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()

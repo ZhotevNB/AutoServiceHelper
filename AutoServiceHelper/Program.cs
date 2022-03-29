@@ -14,6 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddTransient<ICarService, CarServices>();
+builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IRepository, Repository>();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>

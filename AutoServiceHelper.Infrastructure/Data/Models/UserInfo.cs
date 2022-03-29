@@ -17,17 +17,17 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
         public IdentityUser User { get; set; }
 
         [StringLength(DataConstants.NameLength)]
-        public string NickName { get; init; }
+        public string NickName { get; set; }
 
        
         [StringLength(DataConstants.NameLength)]
-        public string FirstName { get; init ; }
+        public string FirstName { get; set ; }
 
         
         [StringLength(DataConstants.NameLength)]
-        public string LastName { get; init; }
+        public string LastName { get; set; }
 
-        public ContactInfo ContactInfo { get; set; }
+        public ContactInfo? ContactInfo { get; set; }
 
         public bool AskToChangeRollMechanic { get; set; } = false;
 
