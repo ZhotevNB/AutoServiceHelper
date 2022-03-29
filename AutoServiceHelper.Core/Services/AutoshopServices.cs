@@ -1,6 +1,7 @@
 ﻿using AutoServiceHelper.Core.Contracts;
 using AutoServiceHelper.Core.Models.Cars;
 using AutoServiceHelper.Core.Models.Issues;
+using AutoServiceHelper.Core.Models.Offers;
 using AutoServiceHelper.Infrastructure.Data.Common;
 using AutoServiceHelper.Infrastructure.Data.Constants;
 using AutoServiceHelper.Infrastructure.Data.Models;
@@ -19,6 +20,20 @@ namespace AutoServiceHelper.Core.Services
         public Task<string> AddMechanicToOrder(Guid id)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task AddOffer(AddOfferViewModel model)
+        {
+            var offer = new Offer()
+            {
+                ShopId = model.ShopId,
+                IssueId = model.IssueId,
+                AdditionalInfo = model.AdditionalInfo
+            };
+
+            repo.Add(offer);
+            repo.SaveChanges();
+
         }
 
         public Task<string> AddPartToService(Guid id)
@@ -75,9 +90,19 @@ namespace AutoServiceHelper.Core.Services
             return issues;
         }
 
-        public Task<IEnumerable<ViewIssueModel>> GetOffers(string shopId)
+        public async Task<IEnumerable<ViewIssueModel>> GetOffers(string shopId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<string> GetShopID(string id)
+        {
+            var re=repo.All<AutoShop>()
+                .Where(x=>x.ManegerId==id)
+                .Select(x=>x.Id)
+                .FirstOrDefault().ToString();
+
+            return re;
         }
 
         public Task<IEnumerable<ViewIssueModel>> GetShopOrders(string shopId)

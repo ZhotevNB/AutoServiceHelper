@@ -1,0 +1,19 @@
+﻿@model AddOfferViewModel
+
+@{
+    ViewData["Title"] = "Add Offer";
+
+}
+
+<form method="post">
+    
+        <div class="form-group ">
+            <div> <span asp-validation-for="AdditionalInfo" class="text-danger"></span></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <label asp-for="AdditionalInfo">AdditionalInfo</label>
+            <textarea  asp-for="AdditionalInfo" class="form-control" id="Additional Info" rows="5" placeholder="Additional Info"></textarea>
+        </div>
+   
+
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>

@@ -1,8 +1,10 @@
 ﻿namespace AutoServiceHelper.Core.Models.Offers
 {
     public class AddOfferViewModel
-    {      
-        public IList<AddShopServiceViewModel> Services { get; set; } = new List<AddShopServiceViewModel>();
+    {
+        public Guid IssueId { get; set; }
+
+        public string ShopId { get; set; }
 
         public string AdditionalInfo { get; set; }
 

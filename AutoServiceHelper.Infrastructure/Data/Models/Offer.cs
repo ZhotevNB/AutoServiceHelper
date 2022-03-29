@@ -17,10 +17,6 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
 
         public string AdditionalInfo { get; set; }
 
-        public decimal TotalPrice 
-        {
-            get { return TotalPrice; } 
-            set { TotalPrice = Services.Select(x => x.Price).Sum(); } 
-        }  
+        public decimal TotalPrice { get; set; } = 0;
     }
 }

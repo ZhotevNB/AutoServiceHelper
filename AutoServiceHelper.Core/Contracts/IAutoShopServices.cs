@@ -1,4 +1,5 @@
 ﻿using AutoServiceHelper.Core.Models.Issues;
+using AutoServiceHelper.Core.Models.Offers;
 using AutoServiceHelper.Infrastructure.Data.Constants;
 
 namespace AutoServiceHelper.Core.Contracts
@@ -13,10 +14,12 @@ namespace AutoServiceHelper.Core.Contracts
 
 
         public Task <string>AddServiceToOffer(Guid id);
+        public Task AddOffer(AddOfferViewModel model);
 
         public Task <string>AddPartToService(Guid id);
 
         public Task<string> AddMechanicToOrder(Guid id);
+        public Task<string> GetShopID(string id);
 
 
 
