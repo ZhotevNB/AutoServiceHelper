@@ -1,0 +1,60 @@
+﻿@model IEnumerable<ViewIssueModel>
+@{
+    ViewData["Title"] = "Car Issues ";
+}
+@*<div class="button-group" role="group" aria-label="Button group with nested dropdown">
+    <a href="/Cars/MyCars" class="btn btn-info text-uppercase">Back to Garage</a>
+
+</div>*@
+
+<section class="py-2">
+    <div class="container">
+        <div style="padding: 1%;">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Manifacture</th>
+                        <th scope="col">Model</th>
+                        <th scope="col">SubmitionDate</th>
+                        <th scope="col">Car Vin</th>
+                        <th scope="col">Car Year</th>
+                        <th scope="col">Car Color</th>
+                        <th scope="col">CarOdometer</th>
+                        <th scope="col">Description</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+
+                @foreach (var issue in Model)
+                {
+                    <tbody>
+                        <tr>
+                            <th scope="row">@issue.Car.Manifacture</th>
+                            <th scope="row">@issue.Car.Model</th>
+                            <td>@issue.SubmitionDate</td>
+                            <td>@issue.Car.Vin</td>
+                            <td>@issue.Car.Year</td>
+                            <td>@issue.Car.Color</td>
+                            <td>@issue.CarOdometer</td>
+                            <td>
+                                <div>
+                                    @issue.Description
+                                </div>
+                            </td>
+                            <td>
+                                 <div class="button-holder">
+                                <a href="/AutoShop/AddOffer?issueId=@issue.Id" class="btn btn-info text-uppercase">Add offer</a>
+                            </div>                             
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+                }
+            </table>
+
+        </div>
+    </div>
+
+</section>
