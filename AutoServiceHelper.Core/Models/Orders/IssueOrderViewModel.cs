@@ -1,12 +1,10 @@
-﻿using AutoServiceHelper.Infrastructure.Data.Constants;
-using AutoServiceHelper.Infrastructure.Data.Models;
+﻿using AutoServiceHelper.Core.Models.Cars;
+using AutoServiceHelper.Infrastructure.Data.Constants;
 
-namespace AutoServiceHelper.Core.Models.Cars
+namespace AutoServiceHelper.Core.Models.Orders
 {
-    public class ViewIssueModel
-    {
-        public Guid Id { get; set; } = Guid.NewGuid();
-
+    public class IssueOrderViewModel
+    {      
         public TypeActivity Type { get; set; }
 
         public string SubmitetByUserId { get; set; }
@@ -23,9 +21,5 @@ namespace AutoServiceHelper.Core.Models.Cars
         public IssueStatus Status { get; set; }
 
         public string Description { get; set; }
-
-
-        //  public IList<Offer> Offers { get; set; } = new List<Offer>();
     }
 }
-

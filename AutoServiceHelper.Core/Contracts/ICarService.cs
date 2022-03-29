@@ -1,7 +1,5 @@
 ﻿using AutoServiceHelper.Core.Models.Cars;
-using AutoServiceHelper.Infrastructure.Data.Common;
-using AutoServiceHelper.Infrastructure.Data.Constants;
-using Microsoft.AspNetCore.Identity;
+using AutoServiceHelper.Core.Models.Issues;
 
 namespace AutoServiceHelper.Core.Contracts
 {

@@ -1,6 +1,6 @@
 ﻿using AutoServiceHelper.Core.Contracts;
 using AutoServiceHelper.Core.Models.Cars;
-using AutoServiceHelper.Models;
+using AutoServiceHelper.Core.Models.Issues;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 

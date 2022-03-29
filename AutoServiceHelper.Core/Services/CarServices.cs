@@ -1,5 +1,6 @@
 ﻿using AutoServiceHelper.Core.Contracts;
 using AutoServiceHelper.Core.Models.Cars;
+using AutoServiceHelper.Core.Models.Issues;
 using AutoServiceHelper.Infrastructure.Data.Common;
 using AutoServiceHelper.Infrastructure.Data.Constants;
 using AutoServiceHelper.Infrastructure.Data.Models;

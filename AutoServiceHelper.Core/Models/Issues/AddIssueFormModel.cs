@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AutoServiceHelper.Core.Models.Cars
+namespace AutoServiceHelper.Core.Models.Issues
 {
     public class AddIssueFormModel
     {
