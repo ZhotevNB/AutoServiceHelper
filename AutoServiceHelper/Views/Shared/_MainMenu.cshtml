@@ -1,28 +1,121 @@
 ﻿<nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <li class="nav-item">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <li class="nav-item">
             <a href="/" class="nav-link">
-              <i class="nav-icon fa fa-home"></i>
-              <p>
-               Home                
-              </p>
+                <i class="nav-icon fa fa-home"></i>
+                <p>
+                    Home
+                </p>
             </a>
-          </li>
-          <li class="nav-item">
+        </li>
+        <li class="nav-item">
             <a href="/Cars/AddCar" class="nav-link">
-              <i class="nav-icon fa fa-car"></i>
-              <p>
-               AddCar                
-              </p>
+                <i class="nav-icon fa fa-car"></i>
+                <p>
+                    AddCar
+                </p>
             </a>
-          </li>
-           <li class="nav-item">
+        </li>
+        <li class="nav-item">
             <a href="/Cars/MyCars" class="nav-link">
-              <i class="nav-icon fas fa-warehouse"></i>
-              <p>
-                MyCars                
-              </p>
+                <i class="nav-icon fas fa-warehouse"></i>
+                <p>
+                    MyCars
+                </p>
             </a>
-          </li>
-        </ul>
-      </nav>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link ">
+                <i class="nav-icon fas fa-copy"></i>
+                <p>
+                    Settings
+                    <i class="fas fa-angle-left right"></i>                    
+                </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none;">
+                <li class="nav-item">
+                    <a href="/users/settings" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Account Settings</p>
+                    </a>
+                </li>              
+            </ul>
+            @if (User.IsInRole("Manager"))
+            {
+                <ul class="nav nav-treeview" style="display: none;">
+                    <li class="nav-item">
+                        <a href="/autoshop/AutoShopInfo" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Shop Information</p>
+                        </a>
+                    </li>              
+                </ul>
+            }
+            @if(User.IsInRole("Administrator"))
+            {
+                 <ul class="nav nav-treeview" style="display: none;">
+                <li class="nav-item">
+                    <a href="/users/RoleManage" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>RoleManage</p>
+                    </a>
+                </li>              
+            </ul>
+            }
+        </li>
+       @if(User.IsInRole("Manager"))
+       {
+            <li class="nav-item">
+            <a href="#" class="nav-link ">
+                <i class="nav-icon fas fa-copy"></i>
+                <p>
+                    Auto Shop
+                    <i class="fas fa-angle-left right"></i>                    
+                </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none;">
+                <li class="nav-item">
+                    <a href="/Autoshop/ShopOffers" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Offers</p>
+                    </a>
+                </li>              
+            </ul> <ul class="nav nav-treeview" style="display: none;">
+                <li class="nav-item">
+                    <a href="/Autoshop/IssuesList" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Issues</p>
+                    </a>
+                </li>              
+            </ul>
+        </li>
+       }
+        @if(User.IsInRole("Mechanic"))
+       {
+           @* <li class="nav-item">
+            <a href="#" class="nav-link ">
+                <i class="nav-icon fas fa-copy"></i>
+                <p>
+                    Auto Shop
+                    <i class="fas fa-angle-left right"></i>                    
+                </p>
+            </a>
+            <ul class="nav nav-treeview" style="display: none;">
+                <li class="nav-item">
+                    <a href="/Autoshop/ShopOffers" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Offers</p>
+                    </a>
+                </li>              
+            </ul> <ul class="nav nav-treeview" style="display: none;">
+                <li class="nav-item">
+                    <a href="/Autoshop/IssuesList" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Issues</p>
+                    </a>
+                </li>              
+            </ul>
+        </li>*@
+       }
+    </ul>
+</nav>

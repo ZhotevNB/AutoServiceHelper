@@ -1,0 +1,70 @@
+﻿@model UserChangeRollViewModel
+
+<form method="post">
+    <div class="card card-secondary">
+        <div class="card-header">
+            <h3 class="card-title">@ViewBag.Model.Name</h3>
+        </div>
+        <input type="hidden" id="Id" name="Id" value="@ViewBag.Model.Id">
+        <input type="hidden" id="Name" name="Name" value="@ViewBag.Model.Name">
+        <div class="card-body">
+            <div row>
+                <div class="card-body">
+                    <label for="ApprovedManagerRole">Manager   </label>
+                    @{
+                        if (@ViewBag.ManagerRole == true)
+                        {
+                            <select name="WantToBeManager" id="WantToBeManager">
+                                <option value="true" selected>Is Manager</option>
+                                <option value="false">Is Not Manager</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <select name="WantToBeManager" id="WantToBeManager">
+                                <option value="true">Is Manager</option>
+                                <option value="false" selected>Is Not Manager</option>
+                            </select>
+                        }
+                    }
+
+
+                    @if (ViewBag.ManagerRole != ViewBag.Model.WantToBeManager)
+                    {
+                        <label for="ApprovedManagerRole" class="text-danger">User whant to change the status of role Manager </label>
+                    }
+                </div>
+
+                <div class="card-body">
+                    <label for="ApprovedMechanicRole">Mechanic</label>
+                    @{
+                        if (@ViewBag.MechanicRole == true)
+                        {
+                            <select name="WantToBeMechanic" id="WantToBeMechanic">
+                                <option value="true" selected>Is Mechanic</option>
+                                <option value="false">Is Not Mechanic</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <select name="WantToBeMechanic" id="WantToBeMechanic">
+                                <option value="true">Is Mechanic</option>
+                                <option value="false" selected>Is Not Mechanic</option>
+                            </select>
+                        }
+                    }
+
+                    @if (ViewBag.MechanicRole != ViewBag.Model.WantToBeMechanic)
+                    {
+                        <label for="ApprovedManagerRole" class="text-danger">User whant to change the status of role Mechanic </label>
+                    }
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary btn-sm float-right">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+

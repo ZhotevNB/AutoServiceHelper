@@ -1,0 +1,40 @@
+﻿
+@model IEnumerable<UserChangeRollViewModel>
+@{
+    ViewData["Title"] = "Role Managmant";
+}
+@*<div class="button-group" role="group" aria-label="Button group with nested dropdown">
+    <a href="/Cars/MyCars" class="btn btn-info text-uppercase">Back to Garage</a>
+
+</div>*@
+
+<section class="py-2">
+    <div class="container">
+        <div style="padding: 1%;">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">UserName</th>                      
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+               @foreach (var item in Model)
+               {
+                    <tbody>
+                    <tr>
+                        <th scope="row">@item.Name</th>                        
+                        <td>
+                            <div class="button-holder">
+                                <a href="/Users/RoleChange?userId=@item.Id" class="btn btn-info text-uppercase">Change roles</a>
+                            </div>
+                        </td>
+                    </tr>
+
+                </tbody>
+               }
+            </table>
+
+        </div>
+    </div>
+
+</section>
