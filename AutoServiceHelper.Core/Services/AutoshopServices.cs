@@ -5,6 +5,7 @@ using AutoServiceHelper.Core.Models.Offers;
 using AutoServiceHelper.Infrastructure.Data.Common;
 using AutoServiceHelper.Infrastructure.Data.Constants;
 using AutoServiceHelper.Infrastructure.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AutoServiceHelper.Core.Services
 {
@@ -48,7 +49,7 @@ namespace AutoServiceHelper.Core.Services
 
         public async Task<IEnumerable<ViewIssueModel>> GetIssues(string userId)
         {
-            var types = GetShopTypes(userId).Result;
+            var types = await GetShopTypes(userId);
             var issues = new List<ViewIssueModel>();
 
             foreach (var type in types)
@@ -69,7 +70,7 @@ namespace AutoServiceHelper.Core.Services
                         Type = x.Type
 
                     }).ToList();
-                 issues.AddRange(result);
+                issues.AddRange(result);
             }
 
             foreach (var issue in issues)
@@ -90,16 +91,26 @@ namespace AutoServiceHelper.Core.Services
             return issues;
         }
 
-        public async Task<IEnumerable<ViewIssueModel>> GetOffers(string shopId)
+        public async Task<IEnumerable<OfferViewModel>> GetOffers(string shopId)
         {
-            throw new NotImplementedException();
+            return repo.All<Offer>()
+                .Where(x => x.ShopId == shopId)
+                .Select(x => new OfferViewModel
+                {
+                    AdditionalInfo = x.AdditionalInfo,
+                    IssueId = x.IssueId,
+                    SubmitionDate = x.SubmitionDate,
+                    TotalPrice = x.TotalPrice,
+                    ShopId = x.ShopId
+                }).ToList();
+
         }
 
         public async Task<string> GetShopID(string id)
         {
-            var re=repo.All<AutoShop>()
-                .Where(x=>x.ManegerId==id)
-                .Select(x=>x.Id)
+            var re = repo.All<AutoShop>()
+                .Where(x => x.ManegerId == id)
+                .Select(x => x.Id)
                 .FirstOrDefault().ToString();
 
             return re;
@@ -111,23 +122,21 @@ namespace AutoServiceHelper.Core.Services
         }
         private async Task<IEnumerable<TypeActivity>> GetShopTypes(string userId)
         {
-           
+
             var types = new List<TypeActivity>();
 
-             var result=repo.All<AutoShop>()
-                .Where(x => x.ManegerId == userId)
-                .Select(x => new
-                {                   
-                    activities = x.Activities.ToList().Select(c=>c.Activity.ActivityName)
-                }).Select(x => x.activities).ToList();
-                      
-                types.AddRange(result[0]);
+            var result = await repo.All<AutoShop>()
+               .Where(x => x.ManegerId == userId)
+               .Select(x => new
+               {
+                   activities = x.Activities.ToList().Select(c => c.Activity.ActivityName)
+               }).Select(x => x.activities).ToListAsync();
 
-                    
+            types.AddRange(result[0]);
 
-             return types;
-         
+            return types;
 
-    }
+
+        }
     }
 }

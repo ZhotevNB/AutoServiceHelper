@@ -8,7 +8,7 @@ namespace AutoServiceHelper.Core.Contracts
     {
         public Task<IEnumerable<ViewIssueModel>> GetIssues(string userId);
 
-        public Task<IEnumerable<ViewIssueModel>> GetOffers(string shopId);
+        public Task<IEnumerable<OfferViewModel>> GetOffers(string shopId);
 
         public Task<IEnumerable<ViewIssueModel>> GetShopOrders(string shopId);
 
