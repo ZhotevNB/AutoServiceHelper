@@ -16,20 +16,16 @@ namespace AutoServiceHelper.Core.Services
         {
             repository = _repository;
         }
-
-        public Task ChangeRolle(string userId)
+               
+        public async Task<string> ChangeUserInfo(string userId, UsersSetingsFormModel model)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task ChangeUserInfo(string userId, UsersSetingsFormModel model)
-        {
-            var info = repository.All<UserInfo>()
+            string result = null;
+            var info = await repository.All<UserInfo>()
                 .Where(u => u.UserId == userId)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             if (info == null)
-            {
+            { 
                 info = new UserInfo();
                 info.UserId = userId;
                 repository.Add(info);
@@ -40,12 +36,62 @@ namespace AutoServiceHelper.Core.Services
             info.AskToChangeRollManager = model.Manager;
             info.AskToChangeRollMechanic = model.Mechanic;
 
-           
-            repository.SaveChanges();
+            try
+            {
+                repository.SaveChanges();
+            }
+            catch (Exception)
+            {
+                result = "Неуспешен запис ";
+                throw;
+            }
 
-            return Task.CompletedTask;
+            return result;
         }
 
+        public async Task<string> ChangeUserContactInfo(string userId, UserContactInfoModel model)
+        {
+            string result = null;
+
+            var contactInfo = await repository.All<ContactInfo>()
+                .Where(x => x.Id == model.Id)
+                .FirstOrDefaultAsync();
+
+            if (contactInfo == null)
+            {
+                contactInfo = new ContactInfo();
+                repository.Add(contactInfo);
+            }
+
+            contactInfo.Country = model.Country;
+            contactInfo.City = model.City;
+            contactInfo.Address = model.Address;
+            contactInfo.PhoneNumber = model.PhoneNumber;
+            contactInfo.Email = model.Email;
+            contactInfo.AdditionalInfo = model.AdditionalInfo;
+
+
+
+
+            var userInfo = await repository.All<UserInfo>()
+                .Where(x=>x.UserId==userId)
+                .FirstOrDefaultAsync();
+
+            userInfo.ContactInfo = contactInfo;
+           
+            try
+            {
+
+                repository.SaveChanges();
+            }
+            catch (Exception)
+            {
+                result = "Възникна грешка при Записа";
+                throw;
+            }
+
+            return result;
+        }
 
         public async Task<IEnumerable<UserChangeRollViewModel>> GetUsers()
         {
@@ -79,7 +125,6 @@ namespace AutoServiceHelper.Core.Services
 
         }
 
-
         public async Task<UsersSetingsFormModel> GetUserInfo(string userId)
         {
             var respons = await repository.All<UserInfo>()
@@ -98,6 +143,7 @@ namespace AutoServiceHelper.Core.Services
 
             return respons;
         }
+
         public async Task<IdentityUser> GetUserById(string userId)
         {
 
@@ -107,5 +153,35 @@ namespace AutoServiceHelper.Core.Services
 
             return respons;
         }
+
+        public async Task<UserContactInfoModel> GetUserContactInfo(string userId)
+        {
+           var userInfo= await repository.All<UserInfo>()
+                .Where(x=>x.UserId == userId)                
+                .FirstOrDefaultAsync();
+
+            if (userInfo.ContactInfo!=null)
+            {
+                var result = await repository.All<ContactInfo>()
+                .Where(x => x.Id == userInfo.ContactInfo.Id)
+                .Select(x => new UserContactInfoModel
+                {
+                    Id = x.Id,
+                    City = x.City,
+                    Country = x.Country,
+                    Email = x.Email,
+                    PhoneNumber = x.PhoneNumber,
+                    Address = x.Address,
+                    AdditionalInfo = x.AdditionalInfo
+                }).FirstOrDefaultAsync();
+                
+                return result;
+            }
+
+            return null;
+         
+        }
+
+       
     }
 }

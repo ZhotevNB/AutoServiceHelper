@@ -47,7 +47,13 @@ namespace AutoServiceHelper.Controllers
             model.UserId = await GetUserId();
 
 
-            userService.ChangeUserInfo(model.UserId, model);
+            var result=userService.ChangeUserInfo(model.UserId, model);
+
+            if (result!=null)
+            {
+                ViewData["ErrorMessage"] = result;
+                return View();
+            }
 
             return Redirect("/");
         }
@@ -138,7 +144,33 @@ namespace AutoServiceHelper.Controllers
 
         public async Task<IActionResult> ContactInfo()
         {
-            return View();
+            var userId=await GetUserId();
+            var model= await userService.GetUserContactInfo(userId);
+
+            if (model==null)
+            {
+              return View();
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ContactInfo(UserContactInfoModel model)
+        {
+            var userId=await GetUserId();
+            if (!ModelState.IsValid)
+            {
+                ViewData["ErrorMessage"] = "Invalid update info";
+                return View(model);
+            }
+
+            var result = await userService.ChangeUserContactInfo(userId, model);
+
+            if (result!=null)
+            {
+                ViewData["ErrorMessage"] = result;
+            }
+
+            return View(model);
         }
         private async Task<string> GetUserId()
         {
