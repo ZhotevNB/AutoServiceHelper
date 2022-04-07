@@ -1,5 +1,4 @@
-﻿@model IEnumerable<ViewIssueModel>
-@{
+﻿@{
     ViewData["Title"] = "Car Issues ";
 }
 <div class="button-group" role="group" aria-label="Button group with nested dropdown">
@@ -40,7 +39,9 @@
                             <td>
                                 @if (!issue.IsFixed)
                                 {
-                                    <a class="badge badge-warning text-uppercase">Waiting</a>
+                                    <div class="button-holder">
+                                        <a href="/Cars/FixIssue?issueId=@issue.Id" class="btn btn-info text-uppercase">Fix</a>
+                                    </div>
                                 }
                                 @if (issue.IsFixed)
                                 {

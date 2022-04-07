@@ -27,10 +27,6 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
 
         public decimal PricePerHouer { get; set; }
 
-        public decimal Price
-        {
-            get { return Price; }
-            set { Price = Parts.Select(x => x.Price).Sum()+(decimal)NeededHourOfWork*PricePerHouer;}
-        }
+        public decimal Price { get; set; } = 0;
     }
 }

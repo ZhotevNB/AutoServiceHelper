@@ -4,6 +4,7 @@ using AutoServiceHelper.Infrastructure.Data.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AutoServiceHelper.Controllers
 {
@@ -25,12 +26,12 @@ namespace AutoServiceHelper.Controllers
 
         public async Task<IActionResult> Settings()
         {
-            var user = await userManager.GetUserAsync(User);
-            var currentUserId = await userManager.GetUserIdAsync(user);
 
-            var model=userService.GetUserInfo(currentUserId);
+            var userId = await GetUserId();
 
-            if (model==null)
+            var model = await userService.GetUserInfo(userId);
+
+            if (model == null)
             {
                 return View();
             }
@@ -42,38 +43,110 @@ namespace AutoServiceHelper.Controllers
         [HttpPost]
         public async Task<IActionResult> Settings(UsersSetingsFormModel model)
         {
-            var user = await userManager.GetUserAsync(User);
-            var currentUserId = await userManager.GetUserIdAsync(user);
 
-            model.UserId = currentUserId;
+            model.UserId = await GetUserId();
 
-            //if (!ModelState.IsValid)
-            //{
-            //    ViewData["ErrorMessage"] = "Възникна грешка";
-            //    return View();
-            //}
 
             userService.ChangeUserInfo(model.UserId, model);
 
             return Redirect("/");
         }
 
-
         [Authorize(Roles = UsersConstants.Rolles.Administrator)]
-
-        public async Task<ActionResult> ManageUsers()
+        public async Task<ActionResult> RoleManage()
         {
+            var users = await userService.GetUsers();
+                      
+            return View(users);
+
+        }
+
+        [Authorize(Roles =UsersConstants.Rolles.Administrator)]
+        public async Task<ActionResult> RoleChange(string userId)
+        {
+
+            var modelList = await userService.GetUsers();
+            var model = modelList.First(m => m.Id == userId);
+
+            var isInMechanicRolle = await userManager.IsInRoleAsync(await userService.GetUserById(model.Id), "Mechanic");
+            var isInManagerRolle = await userManager.IsInRoleAsync(await userService.GetUserById(model.Id), "Manager");
+
+
+            {
+                ViewBag.Model = model;
+                ViewBag.MechanicRole = isInMechanicRolle;
+                ViewBag.ManagerRole = isInManagerRolle;
+
+            }
             return View();
 
         }
 
-        public async Task<IActionResult> CreateRolle()
+        [Authorize(Roles = UsersConstants.Rolles.Administrator)]
+        [HttpPost]
+        public async Task<ActionResult> RoleChange(UserChangeRollViewModel model)
         {
-            await roleManager.CreateAsync(new IdentityRole()
+           var user= await userManager.Users.FirstOrDefaultAsync(m => m.Id == model.Id);
+
+            var isInMechanicRolle = await userManager.IsInRoleAsync(await userService.GetUserById(model.Id), "Mechanic");
+            var isInManagerRolle = await userManager.IsInRoleAsync(await userService.GetUserById(model.Id), "Manager");
+
+            if (model.WantToBeManager!= isInManagerRolle)
             {
-                Name = "Administrator"
-            });
+                if (model.WantToBeManager)
+                {
+                   await userManager.AddToRoleAsync(user, UsersConstants.Rolles.Manager);
+                }
+                else
+                {
+                    await userManager.RemoveFromRoleAsync(user, UsersConstants.Rolles.Manager);
+
+                }
+            }
+            if (model.WantToBeMechanic != isInMechanicRolle)
+            {
+                if (model.WantToBeMechanic)
+                {
+                    await userManager.AddToRoleAsync(user, UsersConstants.Rolles.Mechanic);
+                }
+                else
+                {
+                    await userManager.RemoveFromRoleAsync(user, UsersConstants.Rolles.Mechanic);
+
+                }
+            }
+
+
+            return RedirectToAction("RoleManage");
+           
+        }
+
+        [Authorize(Roles = UsersConstants.Rolles.Administrator)]
+        public async Task<IActionResult> CreateRole()
+        {
+            //await roleManager.CreateAsync(new IdentityRole()
+            //{
+            //    Name = "Mechanic"
+            //});
+            //await roleManager.CreateAsync(new IdentityRole()
+            //{
+            //    Name = "Manager"
+            //});
+
             return Ok();
         }
+
+        public async Task<IActionResult> ContactInfo()
+        {
+            return View();
+        }
+        private async Task<string> GetUserId()
+        {
+            var user = await userManager.GetUserAsync(User);
+            var currentUserId = await userManager.GetUserIdAsync(user);
+
+            return currentUserId;
+        }
+
     }
 }

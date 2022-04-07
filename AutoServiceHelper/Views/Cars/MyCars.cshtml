@@ -1,54 +1,56 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "My Cars ";
 }
 
 <section class="py-5">
-    <div class="container">       
-        <div style="padding: 5%;">
-            <table class="table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Manifacture</th>
-                        <th scope="col">Model</th>
-                        <th scope="col">VIN</th>
-                        <th scope="col">Year</th>
-                        <th scope="col">Color</th>
-                        <th scope="col">Issues</th>
-                        <th scope="col">Orders</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-         
+    <div class="container">
+        <div style="padding: 5px;">
+            <div class="card-body table-responsive p-0" style="height: 500px;">
+                <table class="table table-head-fixed text-nowrap pace-progress-color-blue">
+                    <thead class="sidebar-dark-gray">
+                        <tr>
+                            <th scope="col">Manifacture</th>
+                            <th scope="col">Model</th>
+                            <th scope="col">VIN</th>
+                            <th scope="col">Year</th>
+                            <th scope="col">Color</th>
+                            <th scope="col">Issues</th>
+                            <th scope="col">Orders</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+
                     @foreach (var car in Model)
                     {
-                         <tbody>
-                    <tr>
-                        <th scope="row">@car.Manifacture</th>
-                        <td>@car.Model</td>
-                        <td>@car.Vin</td>
-                        <td>@car.Year</td>
-                        <td>@car.Color</td>
-                        <td>
-                            <div class="button-holder">
-                                <a href="/Cars/Issues?carId=@car.Id" class="btn btn-info text-uppercase">Issues</a>
-                            </div>
-                        </td><td>
-                            <div class="button-holder">
-                                <a href="/Cars/Orders?carId=@car.Id" class="btn btn-info text-uppercase">Orders</a>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="button-holder">
-                                <a href="/Cars/AddIssue?carId=@car.Id" class="btn btn-info text-uppercase">Add Issue</a>
-                            </div>
-                        </td>
-                    </tr>
+                        <tbody>
+                            <tr>
+                                <th scope="row">@car.Manifacture</th>
+                                <td>@car.Model</td>
+                                <td>@car.Vin</td>
+                                <td>@car.Year</td>
+                                <td>@car.Color</td>
+                                <td>
+                                    <div class="button-holder">
+                                        <a href="/Cars/Issues?carId=@car.Id" class="btn btn-info text-uppercase">Issues</a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="button-holder">
+                                        <a href="/Cars/Orders?carId=@car.Id" class="btn btn-info text-uppercase">Orders</a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="button-holder">
+                                        <a href="/Cars/AddIssue?carId=@car.Id" class="btn btn-info text-uppercase">Add Issue</a>
+                                    </div>
+                                </td>
+                            </tr>
 
-                </tbody>
+                        </tbody>
                     }
-                
-            </table>
+
+                </table>
+            </div>
         </div>
     </div>
 </section>
