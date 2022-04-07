@@ -27,6 +27,9 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
         [StringLength(DataConstants.NameLength)]
         public string LastName { get; set; }
 
+        public int? ContactInfoId { get; set; }
+
+        [ForeignKey(nameof(ContactInfoId))]
         public ContactInfo? ContactInfo { get; set; }
 
         public bool AskToChangeRollMechanic { get; set; } = false;
