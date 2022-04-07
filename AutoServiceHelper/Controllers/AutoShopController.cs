@@ -63,6 +63,7 @@ namespace AutoServiceHelper.Controllers
 
             return RedirectToAction("IssuesList");
         }
+
         public async Task<IActionResult> ShopOffers()
         {
             var userId = await GetUserId();
@@ -72,6 +73,7 @@ namespace AutoServiceHelper.Controllers
 
             return View(result);
         }
+
         public async Task<IActionResult> AutoShopInfo()
         {
             var userId = await GetUserId();
