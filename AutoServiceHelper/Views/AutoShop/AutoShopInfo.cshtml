@@ -1,0 +1,86 @@
+﻿@model AutoShopInfoModel
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">AutoShop Information</h3>
+    </div>
+
+
+    <form method="post">
+              
+        <input asp-for="Id" type="text" style="display:none"  id="Id" name="Id">
+        <input asp-for="ShopContactInfo.Id" type="text" style="display:none" id="ShopContactInfo.Id" name="ShopContactInfo.Id">     
+      
+        <div class="card-body">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <div> <span asp-validation-for="Name" class="text-danger"></span></div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <label asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control" id="Name" placeholder="Enter name">
+
+                </div>
+                <div class="form-group col-md-4">
+                    <div> <span asp-validation-for="PricePerHour" class="text-danger"></span></div>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <label asp-for="PricePerHour">Price Per Hour</label>
+                    <input asp-for="PricePerHour" type="text" class="form-control" id="PricePerHour" placeholder="0.00">
+
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <div> <span asp-validation-for="ShopContactInfo.PhoneNumber" class="text-danger"></span></div>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <label asp-for="ShopContactInfo.PhoneNumber"></label>
+                        <input asp-for="ShopContactInfo.PhoneNumber" class="form-control" id="ShopContactInfo.PhoneNumber" placeholder="Enter Phone Number">
+                    </div>
+                    <div class="form-group col-md-2">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <div> <span asp-validation-for="ShopContactInfo.City" class="text-danger"></span></div>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <label asp-for="ShopContactInfo.City"></label>
+                        <input asp-for="ShopContactInfo.City" class="form-control" id="ShopContactInfo.City" placeholder="Enter City">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <div> <span asp-validation-for="ShopContactInfo.Country" class="text-danger"></span></div>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <label asp-for="ShopContactInfo.Country"></label>
+                        <input asp-for="ShopContactInfo.Country" class="form-control" id="ShopContactInfo.Country" placeholder="Enter Country">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <div> <span asp-validation-for="ShopContactInfo.Address" class="text-danger"></span></div>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <label asp-for="ShopContactInfo.Address"></label>
+                        <input asp-for="ShopContactInfo.Address" class="form-control" id="ShopContactInfo.Address" placeholder="Enter Address">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <div> <span asp-validation-for="ShopContactInfo.Email" class="text-danger"></span></div>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <label asp-for="ShopContactInfo.Email"></label>
+                        <input asp-for="ShopContactInfo.Email" class="form-control" id="ShopContactInfo.Email" placeholder="Enter Email">
+                    </div>
+                    <div class="col-sm-6">
+
+                        <div class="form-group">
+                            <div> <span asp-validation-for="ShopContactInfo.AdditionalInfo" class="text-danger"></span></div>
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <label asp-for="ShopContactInfo.AdditionalInfo"></label>
+                            <textarea asp-for="ShopContactInfo.AdditionalInfo" class="form-control" rows="3" placeholder="Enter "></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>

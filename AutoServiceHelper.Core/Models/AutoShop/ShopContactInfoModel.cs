@@ -1,12 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AutoServiceHelper.Infrastructure.Data.Models
+namespace AutoServiceHelper.Core.Models.AutoShop
 {
-    public class ContactInfo
+    public class ShopContactInfoModel
     {
-        [Key]     
-        public int Id { get; set; }
-
+        public int? Id { get; set; }
         [Required]
         public string Country { get; set; }
 
@@ -14,17 +12,16 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
         public string City { get; set; }
 
         [Required]
-        [EmailAddress]
         public string Address { get; set; }
 
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
         public string PhoneNumber { get; set; }
 
         public string AdditionalInfo { get; set; }
-
-
     }
+
 }

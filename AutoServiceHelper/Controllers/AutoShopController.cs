@@ -1,4 +1,5 @@
 ﻿using AutoServiceHelper.Core.Contracts;
+using AutoServiceHelper.Core.Models.AutoShop;
 using AutoServiceHelper.Core.Models.Offers;
 using AutoServiceHelper.Infrastructure.Data.Common;
 using AutoServiceHelper.Infrastructure.Data.Constants;
@@ -64,8 +65,8 @@ namespace AutoServiceHelper.Controllers
         }
         public async Task<IActionResult> ShopOffers()
         {
-            var userId = GetUserId().Result;
-            var shopId = shopServices.GetShopID(userId).Result;
+            var userId = await GetUserId();
+            var shopId = await shopServices.GetShopID(userId);
 
             var result = await shopServices.GetOffers(shopId);
 
@@ -73,8 +74,41 @@ namespace AutoServiceHelper.Controllers
         }
         public async Task<IActionResult> AutoShopInfo()
         {
+            var userId = await GetUserId();
+            var info = await shopServices.GetShopInfo(userId);
+                      
+          
+            if (info != null)
+            {
+               return View(info);
+            }
+
+
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AutoShopInfo(AutoShopInfoModel model)
+        {
+            var userId = await GetUserId();
+
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["ErrorMessage"] = "Unable to update info";
+                return View();
+            }
+
+            var result=await shopServices.AddContactInfo(model,userId);
+
+            if (result!=null)
+            {
+                ViewData["ErrorMessage"] = result;
+            }
+
+            return View();
+        }
+
 
         private async Task<string> GetUserId()
         {

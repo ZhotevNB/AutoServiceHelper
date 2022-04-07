@@ -1,4 +1,5 @@
 ﻿using AutoServiceHelper.Core.Contracts;
+using AutoServiceHelper.Core.Models.AutoShop;
 using AutoServiceHelper.Core.Models.Cars;
 using AutoServiceHelper.Core.Models.Issues;
 using AutoServiceHelper.Core.Models.Offers;
@@ -45,6 +46,60 @@ namespace AutoServiceHelper.Core.Services
         public Task<string> AddServiceToOffer(Guid id)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<string> AddContactInfo(AutoShopInfoModel model, string managerId)
+        {
+            string result = null;
+
+            var contactInfo = await repo.All<ContactInfo>()
+                .Where(x => x.Id == model.ShopContactInfo.Id)
+                .FirstOrDefaultAsync();
+
+            if (contactInfo == null)
+            {
+                contactInfo = new ContactInfo();
+                repo.Add(contactInfo);
+            }
+
+            contactInfo.Country = model.ShopContactInfo.Country;
+            contactInfo.City = model.ShopContactInfo.City;
+            contactInfo.Address = model.ShopContactInfo.Address;
+            contactInfo.PhoneNumber = model.ShopContactInfo.PhoneNumber;
+            contactInfo.Email = model.ShopContactInfo.Email;
+            contactInfo.AdditionalInfo = model.ShopContactInfo.AdditionalInfo;
+
+
+         
+
+            var shopInfo = await repo.All<AutoShop>()
+                .Where(x => x.Id == model.Id)
+                .FirstOrDefaultAsync();
+
+            if (shopInfo == null)
+            {
+                shopInfo = new AutoShop();
+                repo.Add(shopInfo);
+            }
+            shopInfo.Name = model.Name;
+            shopInfo.PricePerHour = model.PricePerHour;
+            shopInfo.ContactInfo = contactInfo;
+            shopInfo.ContactInfoId = contactInfo.Id;
+            shopInfo.ManegerId = managerId;
+
+
+            try
+            {
+                
+                repo.SaveChanges();
+            }
+            catch (Exception)
+            {
+                result = "Възникна грешка при Записа";
+                throw;
+            }
+
+            return result;
         }
 
         public async Task<IEnumerable<ViewIssueModel>> GetIssues(string userId)
@@ -108,19 +163,19 @@ namespace AutoServiceHelper.Core.Services
 
         public async Task<string> GetShopID(string id)
         {
-            var re = repo.All<AutoShop>()
+            var re = await repo.All<AutoShop>()
                 .Where(x => x.ManegerId == id)
                 .Select(x => x.Id)
-                .FirstOrDefault().ToString();
+                .FirstOrDefaultAsync();
 
-            return re;
+            return re.ToString();
         }
 
         public Task<IEnumerable<ViewIssueModel>> GetShopOrders(string shopId)
         {
             throw new NotImplementedException();
         }
-        private async Task<IEnumerable<TypeActivity>> GetShopTypes(string userId)
+        public async Task<IEnumerable<TypeActivity>> GetShopTypes(string userId)
         {
 
             var types = new List<TypeActivity>();
@@ -138,5 +193,61 @@ namespace AutoServiceHelper.Core.Services
 
 
         }
+        public async Task<IEnumerable<TypeActivity>> GetTypesActivity()
+        {
+
+            var types = await repo.All<Activity>()
+                .Select(x => x.ActivityName)
+                .ToListAsync();
+
+            return types;
+
+        }
+        public async Task<AutoShopInfoModel> GetShopInfo(string managerId)
+        {
+            var result = await repo.All<AutoShop>()
+                .Where(x => x.ManegerId == managerId)
+                .Select(x => new AutoShopInfoModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    PricePerHour = x.PricePerHour,
+                    ShopContactInfo = new ShopContactInfoModel
+                    {
+                        Id = x.ContactInfo.Id,
+                        PhoneNumber = x.ContactInfo.PhoneNumber,
+                        City = x.ContactInfo.City,
+                        Country = x.ContactInfo.Country,
+                        Address = x.ContactInfo.Address,
+                        Email = x.ContactInfo.Email,
+                        AdditionalInfo = x.ContactInfo.AdditionalInfo
+                    }
+
+                })
+                .FirstOrDefaultAsync();
+
+            return result;
+        }
+
+        public Task<List<(string, string)>> GetShopMechanics(string shopId)
+        {
+            //To Do .... Need to make MechanicSelectModel
+
+            //var result = repo.All<Mechanic>()
+            //    .Where(x=>x.AutoShopId.ToString() == shopId)
+            //    .SelectMany(x => 
+            //    {
+            //        res.id = x.UserId,
+            //        res.name = x.User.UserName
+
+            //    }
+
+
+
+            throw new NotImplementedException();
+
+        }
+
+
     }
 }
