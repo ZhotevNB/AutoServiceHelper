@@ -35,7 +35,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Activities");
+                    b.ToTable("Activities", (string)null);
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.AutoShop", b =>
@@ -63,7 +63,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("ContactInfoId");
 
-                    b.ToTable("AutoShops");
+                    b.ToTable("AutoShops", (string)null);
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.AutoShopActivity", b =>
@@ -78,7 +78,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("AutoShopId");
 
-                    b.ToTable("AutoShopActivity");
+                    b.ToTable("AutoShopActivity", (string)null);
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.Car", b =>
@@ -117,7 +117,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Cars");
+                    b.ToTable("Cars", (string)null);
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.ContactInfo", b =>
@@ -154,7 +154,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ContactsInfo");
+                    b.ToTable("ContactsInfo", (string)null);
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.Issue", b =>
@@ -197,7 +197,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("CarId");
 
-                    b.ToTable("Issues");
+                    b.ToTable("Issues", (string)null);
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.Mechanic", b =>
@@ -212,7 +212,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("AutoShopId");
 
-                    b.ToTable("Mechanics");
+                    b.ToTable("Mechanics", (string)null);
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.MechanicActivity", b =>
@@ -227,7 +227,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("MechanicActivity");
+                    b.ToTable("MechanicActivity", (string)null);
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.Offer", b =>
@@ -257,7 +257,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("IssueId");
 
-                    b.ToTable("Offers");
+                    b.ToTable("Offers", (string)null);
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.Order", b =>
@@ -295,7 +295,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("IssueId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.Part", b =>
@@ -327,7 +327,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("ShopServiceId");
 
-                    b.ToTable("Parts");
+                    b.ToTable("Parts", (string)null);
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.ShopManeger", b =>
@@ -342,7 +342,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("AutoShopId");
 
-                    b.ToTable("ShopManegers");
+                    b.ToTable("ShopManegers", (string)null);
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.ShopService", b =>
@@ -375,7 +375,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("OfferId");
 
-                    b.ToTable("ShopServices");
+                    b.ToTable("ShopServices", (string)null);
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.UserInfo", b =>
@@ -418,7 +418,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UsersInfo");
+                    b.ToTable("UsersInfo", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

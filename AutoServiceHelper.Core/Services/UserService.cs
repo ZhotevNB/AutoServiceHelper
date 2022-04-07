@@ -160,10 +160,10 @@ namespace AutoServiceHelper.Core.Services
                 .Where(x=>x.UserId == userId)                
                 .FirstOrDefaultAsync();
 
-            if (userInfo.ContactInfo!=null)
+            if (userInfo.ContactInfoId!=null)
             {
                 var result = await repository.All<ContactInfo>()
-                .Where(x => x.Id == userInfo.ContactInfo.Id)
+                .Where(x => x.Id == userInfo.ContactInfoId)
                 .Select(x => new UserContactInfoModel
                 {
                     Id = x.Id,
