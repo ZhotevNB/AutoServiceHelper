@@ -29,7 +29,7 @@
                 <i class="nav-icon fas fa-copy"></i>
                 <p>
                     Settings
-                    <i class="fas fa-angle-left right"></i>                    
+                    <i class="fas fa-angle-left right"></i>
                 </p>
             </a>
             <ul class="nav nav-treeview" style="display: none;">
@@ -38,7 +38,7 @@
                         <i class="far fa-circle nav-icon"></i>
                         <p>Account Settings</p>
                     </a>
-                </li>              
+                </li>
             </ul>
             <ul class="nav nav-treeview" style="display: none;">
                 <li class="nav-item">
@@ -46,7 +46,7 @@
                         <i class="far fa-circle nav-icon"></i>
                         <p>Contact Info</p>
                     </a>
-                </li>              
+                </li>
             </ul>
             @if (User.IsInRole("Manager"))
             {
@@ -56,74 +56,84 @@
                             <i class="far fa-circle nav-icon"></i>
                             <p>Shop Information</p>
                         </a>
-                    </li>              
+                    </li>
                 </ul>
             }
-            @if(User.IsInRole("Administrator"))
+            @if (User.IsInRole("Administrator"))
             {
-                 <ul class="nav nav-treeview" style="display: none;">
-                <li class="nav-item">
-                    <a href="/users/RoleManage" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>RoleManage</p>
-                    </a>
-                </li>              
-            </ul>
+                <ul class="nav nav-treeview" style="display: none;">
+                    <li class="nav-item">
+                        <a href="/users/RoleManage" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>RoleManage</p>
+                        </a>
+                    </li>
+                </ul>
             }
         </li>
-       @if(User.IsInRole("Manager"))
-       {
+        @if (User.IsInRole("Manager"))
+        {
             <li class="nav-item">
-            <a href="#" class="nav-link ">
-                <i class="nav-icon fas fa-copy"></i>
-                <p>
-                    Auto Shop
-                    <i class="fas fa-angle-left right"></i>                    
-                </p>
-            </a>
-            <ul class="nav nav-treeview" style="display: none;">
-                <li class="nav-item">
-                    <a href="/Autoshop/ShopOffers" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Offers</p>
-                    </a>
-                </li>              
-            </ul> <ul class="nav nav-treeview" style="display: none;">
-                <li class="nav-item">
-                    <a href="/Autoshop/IssuesList" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Issues</p>
-                    </a>
-                </li>              
-            </ul>
-        </li>
-       }
-        @if(User.IsInRole("Mechanic"))
-       {
-           @* <li class="nav-item">
-            <a href="#" class="nav-link ">
-                <i class="nav-icon fas fa-copy"></i>
-                <p>
-                    Auto Shop
-                    <i class="fas fa-angle-left right"></i>                    
-                </p>
-            </a>
-            <ul class="nav nav-treeview" style="display: none;">
-                <li class="nav-item">
-                    <a href="/Autoshop/ShopOffers" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Offers</p>
-                    </a>
-                </li>              
-            </ul> <ul class="nav nav-treeview" style="display: none;">
-                <li class="nav-item">
-                    <a href="/Autoshop/IssuesList" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Issues</p>
-                    </a>
-                </li>              
-            </ul>
-        </li>*@
-       }
+                <a href="#" class="nav-link ">
+                    <i class="nav-icon fas fa-copy"></i>
+                    <p>
+                        Auto Shop
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview" style="display: none;">
+                    <li class="nav-item">
+                        <a href="/Autoshop/ShopOffers" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Offers</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview" style="display: none;">
+                    <li class="nav-item">
+                        <a href="/Autoshop/IssuesList" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Issues</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        }
+        @if (User.IsInRole("Mechanic"))
+        {
+            <li class="nav-item">
+                <a href="#" class="nav-link ">
+                    <i class="nav-icon fas fa-copy"></i>
+                    <p>
+                        Mechanic
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview" style="display: none;">
+                    <li class="nav-item">
+                        <a href="/Mechanic/MechanicActivities" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Mechanic Activities</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview" style="display: none;">
+                    <li class="nav-item">
+                        <a href="/Mechanic/MechanicHistoryOrderView" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>View History Order</p>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview" style="display: none;">
+                    <li class="nav-item">
+                        <a href="/Mechanic/OrdersView" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>View Orders</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        }
     </ul>
 </nav>
