@@ -8,23 +8,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutoServiceHelper.Controllers
 {
+    [Authorize(Roles = UsersConstants.Rolles.Administrator)]
     public class AdministratorController : BaseController
-    {
-        private readonly RoleManager<IdentityRole> roleManager;
+    {       
         private readonly UserManager<IdentityUser> userManager;
         private readonly IUserService userService;
 
 
-        public AdministratorController(RoleManager<IdentityRole> _roleManager,
-            UserManager<IdentityUser> _userManager,
+        public AdministratorController(UserManager<IdentityUser> _userManager,
             IUserService _userService)
         {
-            roleManager = _roleManager;
+          
             userManager = _userManager;
             userService = _userService;
         }
 
-        [Authorize(Roles = UsersConstants.Rolles.Administrator)]
+      
         public async Task<ActionResult> RoleManage()
         {
             var users = await userService.GetUsers();
@@ -32,8 +31,7 @@ namespace AutoServiceHelper.Controllers
             return View(users);
 
         }
-
-        [Authorize(Roles = UsersConstants.Rolles.Administrator)]
+      
         public async Task<ActionResult> RoleChange(string userId)
         {
 
@@ -54,7 +52,6 @@ namespace AutoServiceHelper.Controllers
 
         }
 
-        [Authorize(Roles = UsersConstants.Rolles.Administrator)]
         [HttpPost]
         public async Task<ActionResult> RoleChange(UserChangeRollViewModel model)
         {
@@ -93,7 +90,6 @@ namespace AutoServiceHelper.Controllers
 
         }
 
-        [Authorize(Roles = UsersConstants.Rolles.Administrator)]
         public async Task<IActionResult> CreateRole()
         {
             //await roleManager.CreateAsync(new IdentityRole()
