@@ -39,18 +39,9 @@ namespace AutoServiceHelper.Infrastructure.Data
                .HasKey(e => new
                {
                    e.ActivityId,
-                   e.UserId
+                   e.MechanicId
                });
          
-
-            modelBuilder.Entity<Mechanic>()
-             .HasMany(x => x.Activities)
-             .WithOne(x => x.Mechanic)
-             .OnDelete(DeleteBehavior.Restrict);
-
-           
-
-
             base.OnModelCreating(modelBuilder);
         }
 

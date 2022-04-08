@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoServiceHelper.Infrastructure.Data.Models
@@ -12,9 +13,9 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
         public Activity Activity { get; set; }
 
 
-        public string UserId { get; set; }
+        public string MechanicId { get; set; }
 
-        [ForeignKey(nameof (UserId))]
-        public Mechanic Mechanic { get; set; }
+        [ForeignKey(nameof (MechanicId))]
+        public IdentityUser Mechanic { get; set; }
     }
 }

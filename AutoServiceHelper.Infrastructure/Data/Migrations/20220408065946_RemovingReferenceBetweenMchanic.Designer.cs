@@ -4,16 +4,18 @@ using AutoServiceHelper.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace AutoServiceHelper.Infrastructure.data.Migrations
+namespace AutoServiceHelper.Infrastructure.data.migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220408065946_RemovingReferenceBetweenMchanic")]
+    partial class RemovingReferenceBetweenMchanic
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,7 +37,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Activities", (string)null);
+                    b.ToTable("Activities");
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.AutoShop", b =>
@@ -63,7 +65,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("ContactInfoId");
 
-                    b.ToTable("AutoShops", (string)null);
+                    b.ToTable("AutoShops");
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.AutoShopActivity", b =>
@@ -78,7 +80,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("AutoShopId");
 
-                    b.ToTable("AutoShopActivity", (string)null);
+                    b.ToTable("AutoShopActivity");
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.Car", b =>
@@ -117,7 +119,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Cars", (string)null);
+                    b.ToTable("Cars");
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.ContactInfo", b =>
@@ -154,7 +156,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ContactsInfo", (string)null);
+                    b.ToTable("ContactsInfo");
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.Issue", b =>
@@ -197,7 +199,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("CarId");
 
-                    b.ToTable("Issues", (string)null);
+                    b.ToTable("Issues");
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.Mechanic", b =>
@@ -212,7 +214,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("AutoShopId");
 
-                    b.ToTable("Mechanics", (string)null);
+                    b.ToTable("Mechanics");
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.MechanicActivity", b =>
@@ -227,7 +229,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("MechanicId");
 
-                    b.ToTable("MechanicActivity", (string)null);
+                    b.ToTable("MechanicActivity");
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.Offer", b =>
@@ -257,7 +259,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("IssueId");
 
-                    b.ToTable("Offers", (string)null);
+                    b.ToTable("Offers");
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.Order", b =>
@@ -295,7 +297,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("IssueId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.Part", b =>
@@ -327,7 +329,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("ShopServiceId");
 
-                    b.ToTable("Parts", (string)null);
+                    b.ToTable("Parts");
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.ShopManeger", b =>
@@ -342,7 +344,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("AutoShopId");
 
-                    b.ToTable("ShopManegers", (string)null);
+                    b.ToTable("ShopManegers");
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.ShopService", b =>
@@ -375,7 +377,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("OfferId");
 
-                    b.ToTable("ShopServices", (string)null);
+                    b.ToTable("ShopServices");
                 });
 
             modelBuilder.Entity("AutoServiceHelper.Infrastructure.Data.Models.UserInfo", b =>
@@ -418,7 +420,7 @@ namespace AutoServiceHelper.Infrastructure.data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UsersInfo", (string)null);
+                    b.ToTable("UsersInfo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

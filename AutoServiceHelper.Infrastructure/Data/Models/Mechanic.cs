@@ -10,13 +10,13 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
     {
        [Key]
        [Required]
-       public string UserId { get; set; }
+        public string UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
         public IdentityUser User { get; set; }
 
         public Guid AutoShopId { get; set; }
 
-        public IList<MechanicActivity> Activities { get; set; } = new List<MechanicActivity>();
+       
     }
 }
