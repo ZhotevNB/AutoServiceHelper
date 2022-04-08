@@ -110,8 +110,7 @@ namespace AutoServiceHelper.Controllers
 
             return View();
         }
-
-
+          
         private async Task<string> GetUserId()
         {
             var user = await userManager.GetUserAsync(User);
