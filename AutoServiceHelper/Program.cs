@@ -15,6 +15,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddTransient<ICarService, CarServices>();
 builder.Services.AddTransient<IAutoShopServices, AutoshopServices>();
+builder.Services.AddTransient<IMechanicServices, MechanicServices>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IRepository, Repository>();
 

@@ -1,0 +1,30 @@
+﻿@model MechanicActivitiesModel
+@{
+    // var items = (List<SelectListItem>)ViewBag.MechanicActivitys;
+}
+<div class="col-sm-5" rows="35">
+    <div class="card card-primary" >
+        <div class="card-header">
+            <h3 class="card-title">My Activities</h3>
+        </div>
+
+        <form method="post">
+            <input type="hidden" name="UserId" value="@Model.UserId" />
+            <div class="card-body">
+                <div class="form-group">
+                    <label>Select Activities</label>
+
+                    <select asp-for="ActivityIds" multiple="" class="form-control" rows="12">
+                        @foreach (var item in ((IEnumerable<SelectListItem>)ViewBag.MechanicActivitys))
+                        {
+                            <option value="@int.Parse(item.Value)">@item.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
