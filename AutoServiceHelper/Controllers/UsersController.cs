@@ -47,7 +47,7 @@ namespace AutoServiceHelper.Controllers
             model.UserId = await GetUserId();
 
 
-            var result=userService.ChangeUserInfo(model.UserId, model);
+            var result= await userService.ChangeUserInfo(model.UserId, model);
 
             if (result!=null)
             {
@@ -56,90 +56,6 @@ namespace AutoServiceHelper.Controllers
             }
 
             return Redirect("/");
-        }
-
-        [Authorize(Roles = UsersConstants.Rolles.Administrator)]
-        public async Task<ActionResult> RoleManage()
-        {
-            var users = await userService.GetUsers();
-                      
-            return View(users);
-
-        }
-
-        [Authorize(Roles =UsersConstants.Rolles.Administrator)]
-        public async Task<ActionResult> RoleChange(string userId)
-        {
-
-            var modelList = await userService.GetUsers();
-            var model = modelList.First(m => m.Id == userId);
-
-            var isInMechanicRolle = await userManager.IsInRoleAsync(await userService.GetUserById(model.Id), "Mechanic");
-            var isInManagerRolle = await userManager.IsInRoleAsync(await userService.GetUserById(model.Id), "Manager");
-
-
-            {
-                ViewBag.Model = model;
-                ViewBag.MechanicRole = isInMechanicRolle;
-                ViewBag.ManagerRole = isInManagerRolle;
-
-            }
-            return View();
-
-        }
-
-        [Authorize(Roles = UsersConstants.Rolles.Administrator)]
-        [HttpPost]
-        public async Task<ActionResult> RoleChange(UserChangeRollViewModel model)
-        {
-           var user= await userManager.Users.FirstOrDefaultAsync(m => m.Id == model.Id);
-
-            var isInMechanicRolle = await userManager.IsInRoleAsync(await userService.GetUserById(model.Id), "Mechanic");
-            var isInManagerRolle = await userManager.IsInRoleAsync(await userService.GetUserById(model.Id), "Manager");
-
-            if (model.WantToBeManager!= isInManagerRolle)
-            {
-                if (model.WantToBeManager)
-                {
-                   await userManager.AddToRoleAsync(user, UsersConstants.Rolles.Manager);
-                }
-                else
-                {
-                    await userManager.RemoveFromRoleAsync(user, UsersConstants.Rolles.Manager);
-
-                }
-            }
-            if (model.WantToBeMechanic != isInMechanicRolle)
-            {
-                if (model.WantToBeMechanic)
-                {
-                    await userManager.AddToRoleAsync(user, UsersConstants.Rolles.Mechanic);
-                }
-                else
-                {
-                    await userManager.RemoveFromRoleAsync(user, UsersConstants.Rolles.Mechanic);
-
-                }
-            }
-
-
-            return RedirectToAction("RoleManage");
-           
-        }
-
-        [Authorize(Roles = UsersConstants.Rolles.Administrator)]
-        public async Task<IActionResult> CreateRole()
-        {
-            //await roleManager.CreateAsync(new IdentityRole()
-            //{
-            //    Name = "Mechanic"
-            //});
-            //await roleManager.CreateAsync(new IdentityRole()
-            //{
-            //    Name = "Manager"
-            //});
-
-            return Ok();
         }
 
         public async Task<IActionResult> ContactInfo()
@@ -153,6 +69,7 @@ namespace AutoServiceHelper.Controllers
             }
             return View(model);
         }
+
         [HttpPost]
         public async Task<IActionResult> ContactInfo(UserContactInfoModel model)
         {
@@ -172,6 +89,7 @@ namespace AutoServiceHelper.Controllers
 
             return View(model);
         }
+
         private async Task<string> GetUserId()
         {
             var user = await userManager.GetUserAsync(User);
