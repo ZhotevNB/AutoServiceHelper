@@ -15,7 +15,7 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
         [ForeignKey(nameof(UserId))]
         public IdentityUser User { get; set; }
 
-        public Guid AutoShopId { get; set; }
+        public Guid? AutoShopId { get; set; }
 
        
     }

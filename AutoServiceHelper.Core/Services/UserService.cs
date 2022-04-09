@@ -20,6 +20,7 @@ namespace AutoServiceHelper.Core.Services
         public async Task<string> ChangeUserInfo(string userId, UsersSetingsFormModel model)
         {
             string result = null;
+
             var info = await repository.All<UserInfo>()
                 .Where(u => u.UserId == userId)
                 .FirstOrDefaultAsync();

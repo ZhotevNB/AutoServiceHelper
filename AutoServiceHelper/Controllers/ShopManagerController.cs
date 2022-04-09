@@ -26,7 +26,7 @@ namespace AutoServiceHelper.Controllers
             var shopId = await shopServices.GetShopID(await GetUserId());
             var result = await shopServices.GetPosibleMechanicsList(shopId);
 
-            return Ok();
+            return View(result);
         }
         public async Task<IActionResult> AutoShopInfo()
         {

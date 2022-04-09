@@ -3,9 +3,11 @@ using AutoServiceHelper.Core.Models.AutoShop;
 using AutoServiceHelper.Core.Models.Cars;
 using AutoServiceHelper.Core.Models.Issues;
 using AutoServiceHelper.Core.Models.Offers;
+using AutoServiceHelper.Infrastructure.Data;
 using AutoServiceHelper.Infrastructure.Data.Common;
 using AutoServiceHelper.Infrastructure.Data.Constants;
 using AutoServiceHelper.Infrastructure.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoServiceHelper.Core.Services
@@ -13,10 +15,15 @@ namespace AutoServiceHelper.Core.Services
     public class AutoshopServices : IAutoShopServices
     {
         private readonly IRepository repo;
+        private readonly UserManager<IdentityUser> userManager;
 
-        public AutoshopServices(IRepository _repo)
+
+        public AutoshopServices(IRepository _repo,
+            UserManager<IdentityUser> _userManager)
         {
             repo = _repo;
+            userManager = _userManager;
+            
         }
 
         public Task<string> AddMechanicToOrder(Guid id)
@@ -161,10 +168,10 @@ namespace AutoServiceHelper.Core.Services
 
         }
 
-        public async Task<string> GetShopID(string id)
+        public async Task<string> GetShopID(string userId)
         {
             var re = await repo.All<AutoShop>()
-                .Where(x => x.ManegerId == id)
+                .Where(x => x.ManegerId == userId)
                 .Select(x => x.Id)
                 .FirstOrDefaultAsync();
 
@@ -227,6 +234,43 @@ namespace AutoServiceHelper.Core.Services
                 .FirstOrDefaultAsync();
 
             return result;
+        }
+
+        public async Task<IEnumerable<ShopMechanicsViewModel>>GetPosibleMechanicsList(string shopId)
+        {
+            var mechanicsList = await userManager.Users
+                .ToListAsync();
+
+            var allBusyUser =  await repo.All<Mechanic>()
+                .Where(x=>x.AutoShopId.ToString()!=shopId)              
+                .Select(x=>x.UserId)
+                .ToListAsync();
+
+            var allShopMechanics = await repo.All<Mechanic>()
+               .Where(x => x.AutoShopId.ToString() == shopId)
+               .Select(x => x.UserId)
+               .ToListAsync();
+
+            var mechanicsId= mechanicsList
+               .Where(x => userManager.IsInRoleAsync(x, "Mechanic").Result)
+                .Where(x => allBusyUser.All(a => a != x.Id))
+                .Select(x=>x.Id)
+                .ToList();
+
+            var mechanicInfo =  await repo.All<UserInfo>()
+                .Where(x => mechanicsId.Any(a => x.UserId == a))
+                .Select(x => new ShopMechanicsViewModel()
+                {
+                    Id = x.UserId,
+                    Name = $"{x.FirstName} {x.LastName}",
+                    WorkForShop = allShopMechanics.Any(a => x.UserId == a) ? true : false
+
+                })
+                .ToListAsync();
+
+
+            
+            return mechanicInfo;
         }
 
         public Task<List<(string, string)>> GetShopMechanics(string shopId)

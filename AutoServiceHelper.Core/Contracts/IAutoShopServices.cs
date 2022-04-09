@@ -18,7 +18,7 @@ namespace AutoServiceHelper.Core.Contracts
 
         public Task<string> AddContactInfo(AutoShopInfoModel model,string managerId);
 
-        public Task<string> GetShopID(string id);
+        public Task<string> GetShopID(string userId);
 
         public Task<IEnumerable<TypeActivity>> GetShopTypes(string userId);
 
@@ -33,6 +33,8 @@ namespace AutoServiceHelper.Core.Contracts
         public Task<IEnumerable<OfferViewModel>> GetOffers(string shopId);
 
         public Task<List<(string id,string name)>> GetShopMechanics(string shopId);
+
+        public  Task<IEnumerable<ShopMechanicsViewModel>> GetPosibleMechanicsList(string shopId);
 
     }
 }
