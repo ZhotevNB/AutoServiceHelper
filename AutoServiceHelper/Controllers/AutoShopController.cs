@@ -24,6 +24,7 @@ namespace AutoServiceHelper.Controllers
             shopServices = _shopService;
 
         }
+       
 
         public async Task<IActionResult> IssuesList()
         {
@@ -74,42 +75,7 @@ namespace AutoServiceHelper.Controllers
             return View(result);
         }
 
-        public async Task<IActionResult> AutoShopInfo()
-        {
-            var userId = await GetUserId();
-            var info = await shopServices.GetShopInfo(userId);
-                      
-          
-            if (info != null)
-            {
-               return View(info);
-            }
-
-
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AutoShopInfo(AutoShopInfoModel model)
-        {
-            var userId = await GetUserId();
-
-
-            if (!ModelState.IsValid)
-            {
-                ViewData["ErrorMessage"] = "Unable to update info";
-                return View();
-            }
-
-            var result=await shopServices.AddContactInfo(model,userId);
-
-            if (result!=null)
-            {
-                ViewData["ErrorMessage"] = result;
-            }
-
-            return View();
-        }
+      
           
         private async Task<string> GetUserId()
         {
