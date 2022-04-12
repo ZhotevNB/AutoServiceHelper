@@ -35,7 +35,10 @@ namespace AutoServiceHelper.Infrastructure.Data.Common
         { 
             return dbContext.Set<T>(); 
         }
-
+        public void DeleteRange<T>(IEnumerable<T> entities) where T : class
+        {
+            this.DbSet<T>().RemoveRange(entities);
+        }
 
     }
 }

@@ -11,5 +11,7 @@ namespace AutoServiceHelper.Infrastructure.Data.Common
         IQueryable<T> All<T>() where T : class;
 
         int SaveChanges();
+
+        void DeleteRange<T>(IEnumerable<T> entities) where T : class;
     }
 }
