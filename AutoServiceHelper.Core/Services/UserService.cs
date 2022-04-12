@@ -72,8 +72,6 @@ namespace AutoServiceHelper.Core.Services
             contactInfo.AdditionalInfo = model.AdditionalInfo;
 
 
-
-
             var userInfo = await repository.All<UserInfo>()
                 .Where(x=>x.UserId==userId)
                 .FirstOrDefaultAsync();

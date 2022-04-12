@@ -23,7 +23,7 @@ namespace AutoServiceHelper.Core.Services
         {
             repo = _repo;
             userManager = _userManager;
-            
+
         }
 
         public Task<string> AddMechanicToOrder(Guid id)
@@ -31,6 +31,7 @@ namespace AutoServiceHelper.Core.Services
             throw new NotImplementedException();
         }
 
+        //Inplemented
         public async Task AddOffer(AddOfferViewModel model)
         {
             var offer = new Offer()
@@ -54,61 +55,8 @@ namespace AutoServiceHelper.Core.Services
         {
             throw new NotImplementedException();
         }
-
-        public async Task<string> AddContactInfo(AutoShopInfoModel model, string managerId)
-        {
-            string result = null;
-
-            var contactInfo = await repo.All<ContactInfo>()
-                .Where(x => x.Id == model.ShopContactInfo.Id)
-                .FirstOrDefaultAsync();
-
-            if (contactInfo == null)
-            {
-                contactInfo = new ContactInfo();
-                repo.Add(contactInfo);
-            }
-
-            contactInfo.Country = model.ShopContactInfo.Country;
-            contactInfo.City = model.ShopContactInfo.City;
-            contactInfo.Address = model.ShopContactInfo.Address;
-            contactInfo.PhoneNumber = model.ShopContactInfo.PhoneNumber;
-            contactInfo.Email = model.ShopContactInfo.Email;
-            contactInfo.AdditionalInfo = model.ShopContactInfo.AdditionalInfo;
-
-
-         
-
-            var shopInfo = await repo.All<AutoShop>()
-                .Where(x => x.Id == model.Id)
-                .FirstOrDefaultAsync();
-
-            if (shopInfo == null)
-            {
-                shopInfo = new AutoShop();
-                repo.Add(shopInfo);
-            }
-            shopInfo.Name = model.Name;
-            shopInfo.PricePerHour = model.PricePerHour;
-            shopInfo.ContactInfo = contactInfo;
-            shopInfo.ContactInfoId = contactInfo.Id;
-            shopInfo.ManegerId = managerId;
-
-
-            try
-            {
-                
-                repo.SaveChanges();
-            }
-            catch (Exception)
-            {
-                result = "Възникна грешка при Записа";
-                throw;
-            }
-
-            return result;
-        }
-
+              
+        //Implemented
         public async Task<IEnumerable<ViewIssueModel>> GetIssues(string userId)
         {
             var types = await GetShopTypes(userId);
@@ -153,6 +101,7 @@ namespace AutoServiceHelper.Core.Services
             return issues;
         }
 
+        //Implemented
         public async Task<IEnumerable<OfferViewModel>> GetOffers(string shopId)
         {
             return repo.All<Offer>()
@@ -168,20 +117,23 @@ namespace AutoServiceHelper.Core.Services
 
         }
 
-        public async Task<string> GetShopID(string userId)
+        //implemented
+        public async Task<Guid> GetShopID(string userId)
         {
             var re = await repo.All<AutoShop>()
                 .Where(x => x.ManegerId == userId)
                 .Select(x => x.Id)
                 .FirstOrDefaultAsync();
 
-            return re.ToString();
+            return re;
         }
 
         public Task<IEnumerable<ViewIssueModel>> GetShopOrders(string shopId)
         {
             throw new NotImplementedException();
         }
+
+        //Implemented
         public async Task<IEnumerable<TypeActivity>> GetShopTypes(string userId)
         {
 
@@ -200,6 +152,8 @@ namespace AutoServiceHelper.Core.Services
 
 
         }
+
+        //Implemented
         public async Task<IEnumerable<TypeActivity>> GetTypesActivity()
         {
 
@@ -210,6 +164,8 @@ namespace AutoServiceHelper.Core.Services
             return types;
 
         }
+
+        //Implemented to be sent in manager services
         public async Task<AutoShopInfoModel> GetShopInfo(string managerId)
         {
             var result = await repo.All<AutoShop>()
@@ -236,62 +192,7 @@ namespace AutoServiceHelper.Core.Services
             return result;
         }
 
-        public async Task<IEnumerable<ShopMechanicsViewModel>>GetPosibleMechanicsList(string shopId)
-        {
-            var mechanicsList = await userManager.Users
-                .ToListAsync();
-
-            var allBusyUser =  await repo.All<Mechanic>()
-                .Where(x=>x.AutoShopId.ToString()!=shopId)              
-                .Select(x=>x.UserId)
-                .ToListAsync();
-
-            var allShopMechanics = await repo.All<Mechanic>()
-               .Where(x => x.AutoShopId.ToString() == shopId)
-               .Select(x => x.UserId)
-               .ToListAsync();
-
-            var mechanicsId= mechanicsList
-               .Where(x => userManager.IsInRoleAsync(x, "Mechanic").Result)
-                .Where(x => allBusyUser.All(a => a != x.Id))
-                .Select(x=>x.Id)
-                .ToList();
-
-            var mechanicInfo =  await repo.All<UserInfo>()
-                .Where(x => mechanicsId.Any(a => x.UserId == a))
-                .Select(x => new ShopMechanicsViewModel()
-                {
-                    Id = x.UserId,
-                    Name = $"{x.FirstName} {x.LastName}",
-                    WorkForShop = allShopMechanics.Any(a => x.UserId == a) ? true : false
-
-                })
-                .ToListAsync();
-
-
-            
-            return mechanicInfo;
-        }
-
-        public Task<List<(string, string)>> GetShopMechanics(string shopId)
-        {
-            //To Do .... Need to make MechanicSelectModel
-
-            //var result = repo.All<Mechanic>()
-            //    .Where(x=>x.AutoShopId.ToString() == shopId)
-            //    .SelectMany(x => 
-            //    {
-            //        res.id = x.UserId,
-            //        res.name = x.User.UserName
-
-            //    }
-
-
-
-            throw new NotImplementedException();
-
-        }
-
-
+      
+        
     }
 }
