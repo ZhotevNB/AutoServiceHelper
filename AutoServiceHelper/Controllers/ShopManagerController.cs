@@ -12,22 +12,66 @@ namespace AutoServiceHelper.Controllers
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly IAutoShopServices shopServices;
+        private readonly IManagerServices shopManagerServices;
 
         public ShopManagerController(UserManager<IdentityUser> _userManager,
-            IAutoShopServices _shopService)
+            IAutoShopServices _shopService,
+             IManagerServices _shopManagerServices)
         {
             userManager = _userManager;
             shopServices = _shopService;
-
+            shopManagerServices= _shopManagerServices;
         }
 
         public async Task<IActionResult> ShopMechanics()
         {
             var shopId = await shopServices.GetShopID(await GetUserId());
-            var result = await shopServices.GetPosibleMechanicsList(shopId);
+            var result = await shopManagerServices.GetPosibleMechanicsList(shopId.ToString());
 
-            return View(result);
+            return View(result);            
         }
+
+        public  async Task<IActionResult>HireMechanic(string userId)
+        {
+            var shopId = await shopServices.GetShopID(await GetUserId());
+            if (shopId == null)
+            {
+                ViewData["ErrorMessage"] = "Invalid Operation";
+                return RedirectToAction("ShopMechanics");
+            }
+
+            var result = shopManagerServices.HireMechanic(userId, shopId);
+
+            if (result != null)
+            {
+                ViewData["ErrorMessage"] = result;
+                return RedirectToAction("ShopMechanics");
+            }
+
+            return RedirectToAction("ShopMechanics");
+        }
+
+        public async Task<IActionResult> FireMechanic(string userId)
+        {
+            var shopId = await shopServices.GetShopID(await GetUserId());
+
+            if (shopId == null)
+            {
+                ViewData["ErrorMessage"] = "Invalid Operation";
+                return RedirectToAction("ShopMechanics");
+            }
+
+            var result = shopManagerServices.FireMechanic(userId, shopId);
+
+            if (result != null)
+            {
+                ViewData["ErrorMessage"] = result;
+                return RedirectToAction("ShopMechanics");
+            }
+
+            return RedirectToAction("ShopMechanics"); 
+        }
+               
         public async Task<IActionResult> AutoShopInfo()
         {
             var userId = await GetUserId();
@@ -55,7 +99,7 @@ namespace AutoServiceHelper.Controllers
                 return View();
             }
 
-            var result = await shopServices.AddContactInfo(model, userId);
+            var result = await shopManagerServices.AddContactInfo(model, userId);
 
             if (result != null)
             {

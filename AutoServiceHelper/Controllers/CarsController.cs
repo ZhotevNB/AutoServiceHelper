@@ -19,7 +19,6 @@ namespace AutoServiceHelper.Controllers
 
         public IActionResult AddCar() => View();
 
-
         [HttpPost]
         public async Task<IActionResult> AddCar(AddCarFormModel car)
         {
@@ -37,6 +36,7 @@ namespace AutoServiceHelper.Controllers
 
 
         }
+
         public async Task<IActionResult> MyCars()
         {
             var user = await userManager.GetUserAsync(User);
@@ -85,10 +85,19 @@ namespace AutoServiceHelper.Controllers
             }
             return RedirectToAction("MyCars");
         }
+
         public IActionResult FixIssue(string issueId)
         {
             carServices.FixIssue(issueId);
             return RedirectToAction("MyCars");
+        }
+
+        public IActionResult Orders(string id)
+        {
+            
+                
+            
+            return View();
         }
     }
 }

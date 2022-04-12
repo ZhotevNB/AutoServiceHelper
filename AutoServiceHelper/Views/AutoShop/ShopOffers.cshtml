@@ -1,0 +1,53 @@
+﻿@model IEnumerable<OfferViewModel>
+
+@{
+    ViewData["Title"] = "Shop offers";
+}
+
+<section class="py-2">
+    <div class="container">
+        <div style="padding: 0px;">
+            <div class="card-body table-responsive p-0" style="height: 500px;">
+                <table class="table table-head-fixed text-nowrap pace-progress-color-blue">
+                    <thead class="sidebar-dark-gray">
+                        <tr>
+                            <th scope="col">SubmitionDate</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Information</th>                           
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+
+                    @foreach (var offer in Model)
+                    {
+                        <tbody>
+                            <tr>
+                                <th scope="row">@offer.SubmitionDate</th>
+                                <td>@offer.TotalPrice</td>
+                                <td>@offer.AdditionalInfo</td>
+                               
+                               @* <td>
+                                    <div class="button-holder">
+                                        <a href="/Cars/Issues?carId=@car.Id" class="btn btn-info text-uppercase">Issues</a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="button-holder">
+                                        <a href="/Cars/Orders?carId=@car.Id" class="btn btn-info text-uppercase">Orders</a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="button-holder">
+                                        <a href="/Cars/AddIssue?carId=@car.Id" class="btn btn-info text-uppercase">Add Issue</a>
+                                    </div>
+                                </td>*@
+                            </tr>
+
+                        </tbody>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+</section>

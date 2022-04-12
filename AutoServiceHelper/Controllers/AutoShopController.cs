@@ -1,9 +1,6 @@
 ﻿using AutoServiceHelper.Core.Contracts;
-using AutoServiceHelper.Core.Models.AutoShop;
 using AutoServiceHelper.Core.Models.Offers;
-using AutoServiceHelper.Infrastructure.Data.Common;
 using AutoServiceHelper.Infrastructure.Data.Constants;
-using AutoServiceHelper.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -59,7 +56,9 @@ namespace AutoServiceHelper.Controllers
                 ViewData["ErrorMessage"] = "You are not authorize";
                 return View();
             }
-            model.ShopId = await shopServices.GetShopID(id);
+            var temp = await shopServices.GetShopID(id);
+
+            model.ShopId = temp.ToString();
             await shopServices.AddOffer(model);
 
             return RedirectToAction("IssuesList");
@@ -70,13 +69,11 @@ namespace AutoServiceHelper.Controllers
             var userId = await GetUserId();
             var shopId = await shopServices.GetShopID(userId);
 
-            var result = await shopServices.GetOffers(shopId);
+            var result = await shopServices.GetOffers(shopId.ToString());
 
             return View(result);
         }
-
-      
-          
+              
         private async Task<string> GetUserId()
         {
             var user = await userManager.GetUserAsync(User);
