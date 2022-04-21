@@ -11,10 +11,10 @@
                 <table class="table table-head-fixed text-nowrap pace-progress-color-blue">
                     <thead class="sidebar-dark-gray">
                         <tr>
-                            <th scope="col">SubmitionDate</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Information</th>                           
-                            <th scope="col"></th>
+                            <th>SubmitionDate</th>
+                            <th>Price</th>
+                            <th>Information</th>
+                            <th></th>
                         </tr>
                     </thead>
 
@@ -22,25 +22,14 @@
                     {
                         <tbody>
                             <tr>
-                                <th scope="row">@offer.SubmitionDate</th>
+                                <td scope="row">@offer.SubmitionDate</td>
                                 <td>@offer.TotalPrice</td>
-                                <td>@offer.AdditionalInfo</td>
-                               
-                               @* <td>
-                                    <div class="button-holder">
-                                        <a href="/Cars/Issues?carId=@car.Id" class="btn btn-info text-uppercase">Issues</a>
-                                    </div>
-                                </td>
+                                <td>@offer.AdditionalInfo</td>                                
                                 <td>
                                     <div class="button-holder">
-                                        <a href="/Cars/Orders?carId=@car.Id" class="btn btn-info text-uppercase">Orders</a>
+                                        <a href="/AutoShop/Services?offerId=@offer.Id" class="btn btn-info text-uppercase">Service</a>
                                     </div>
-                                </td>
-                                <td>
-                                    <div class="button-holder">
-                                        <a href="/Cars/AddIssue?carId=@car.Id" class="btn btn-info text-uppercase">Add Issue</a>
-                                    </div>
-                                </td>*@
+                                </td>                               
                             </tr>
 
                         </tbody>

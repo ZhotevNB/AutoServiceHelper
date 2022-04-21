@@ -20,5 +20,6 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
 
         public decimal Price { get; set; }
 
+        public Guid ShopServiceId { get; set; }
     }
 }

@@ -1,0 +1,39 @@
+﻿@model AddShopServiceViewModel
+@{
+    ViewData["Title"] = "Add Service";
+}
+ <div class="button-holder">
+                            <a href="/AutoShop/Services?offerId=@ViewBag.OfferId" class="btn btn-info text-uppercase">Back to service</a>
+                        </div>
+<form method="post">
+    <div class="form-row">
+        <div>
+            <input asp-for="offerId" class="form-control" type="hidden" id="offerId" value="@ViewBag.OfferId">
+        </div>
+        <div class="form-group col-md-8">
+            <div> <span asp-validation-for="Name" class="text-danger"></span></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <label asp-for="Name">Name</label>
+            <input asp-for="Name" class="form-control" id="Name" placeholder="Name">
+        </div>
+        <div class="form-group col-md-2">
+            <div> <span asp-validation-for="NeededHourOfWork" class="text-danger"></span></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <label asp-for="NeededHourOfWork">Needed Hour Of Work</label>
+            <input asp-for="NeededHourOfWork" class="form-control" id="NeededHourOfWork" placeholder="Needed Hour Of Work">
+        </div>
+    </div>
+    <div class="form-group col-md-2">
+        <label asp-for="Type">Type service</label>
+        <select asp-for="Type" aria-label="Type service">
+            <option selected>Chose Type</option>
+            @foreach (var type in ViewBag.Types)
+            {
+                <option value="@type">@type</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+</form>

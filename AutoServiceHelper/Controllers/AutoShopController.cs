@@ -21,7 +21,7 @@ namespace AutoServiceHelper.Controllers
             shopServices = _shopService;
 
         }
-       
+
 
         public async Task<IActionResult> IssuesList()
         {
@@ -35,6 +35,37 @@ namespace AutoServiceHelper.Controllers
                 return View();
             }
 
+            return View(model);
+        }
+
+        public async Task<IActionResult> AddPart(Guid serviceId)
+        {
+            ViewBag.serviceId = serviceId;
+            return View();
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> AddPart(AddPartViewModel model)
+        {
+            ViewBag.serviceId = model.ServiceId;
+            if (!ModelState.IsValid)
+            {
+                ViewData["ErrorMessage"] = "Indvalid input";
+            }
+            else
+            {
+                var result = await shopServices.AddPartToService(model);
+
+                if (result!=null)
+                {
+                    ViewData["ErrorMessage"] = result;
+                }
+                else
+                {
+                    ViewData["SuccessMessage"] = "Part added";
+                }
+                model = null;
+            }
             return View(model);
         }
 
@@ -64,6 +95,63 @@ namespace AutoServiceHelper.Controllers
             return RedirectToAction("IssuesList");
         }
 
+        public async Task<IActionResult> AddService(string offerId)
+        {
+            ViewBag.OfferId = offerId;
+            ViewBag.Types = await shopServices.GetShopTypes(await GetUserId());
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddService(AddShopServiceViewModel model)
+        {
+                ViewBag.OfferId = model.offerId;
+                ViewBag.Types = await shopServices.GetShopTypes(await GetUserId());
+            if (!ModelState.IsValid)
+            {
+                return View();
+               
+            }
+
+            var userId = await GetUserId();
+            var shopId = await shopServices.GetShopID(userId);
+            var msg = await shopServices.AddServiceToOffer(model, shopId);
+
+            if (msg != null)
+            {
+                ViewData["ErrorMessage"] = msg;                
+                return View();
+
+            }
+
+            ViewData["SuccessMessage"] = "Service Added";           
+            return View();
+        }
+
+        public async Task<IActionResult> RemoveService(string serviceId)
+        {
+            var result = await shopServices.RemoveServiceFromOffer(serviceId);
+
+
+            if (result != null)
+            {
+                ViewData["ErrorMessage"] = result;
+            }
+
+            return RedirectToAction("ShopOffers");
+        }
+        public async Task<IActionResult> RemovePart(string partId)
+        {
+              var result = await shopServices.RemovePartFromService(partId);
+
+
+            if (result != null)
+            {
+                ViewData["ErrorMessage"] = result;
+            }
+
+            return RedirectToAction("ShopOffers");
+        }
+
         public async Task<IActionResult> ShopOffers()
         {
             var userId = await GetUserId();
@@ -73,7 +161,15 @@ namespace AutoServiceHelper.Controllers
 
             return View(result);
         }
-              
+
+        public async Task<IActionResult> ServiceParts(string serviceId)
+        {
+            var result= await shopServices.GetPartsForService(serviceId);
+            ViewBag.offerId = await shopServices.GetOfferIdByServiceId(serviceId);
+            ViewBag.ServiceId = Guid.Parse(serviceId);
+
+            return View(result);
+        }
         private async Task<string> GetUserId()
         {
             var user = await userManager.GetUserAsync(User);
@@ -82,6 +178,19 @@ namespace AutoServiceHelper.Controllers
             return currentUserId;
         }
 
+        public async Task<IActionResult> Services(string offerId)
+        {
+            var model = await shopServices.GetServicesForOffer(offerId);
+            ViewBag.OfferId = offerId;
+            if (model == null)
+            {
+
+                return View();
+            }
+
+
+            return View(model);
+        }
 
     }
 }

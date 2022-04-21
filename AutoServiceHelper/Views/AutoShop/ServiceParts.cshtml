@@ -1,0 +1,49 @@
+﻿@model IEnumerable<PartsViewModel>
+@{
+    ViewData["Title"] = "Parts";
+}
+<div class="button-holder">
+                            <a href="/AutoShop/Services?offerId=@ViewBag.offerId" class="btn btn-info text-uppercase">Back to service</a>
+                        </div>
+<section class="py-2">
+    <div class="container">
+        <div style="padding: 0px;">
+            <div class="card-body table-responsive p-0" style="height: 500px;">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead class="sidebar-dark-gray">
+                        <tr>
+                            <th>Part Name</th>
+                            <th>Indetification Number</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    @if (Model != null)
+                    {
+                        foreach (var part in Model)
+                        {
+                            <tbody>
+                                <tr>
+                                    <td scope="row">@part.Name</td>
+                                    <td>@part.Number</td>
+                                    <td>@part.Price</td>
+                                    <td>@part.QuantitiNeeded</td>
+                                    <td>
+                                        <div class="button-holder">
+                                            <a href="/AutoShop/RemovePart?partId=@part.Id" class="btn btn-danger text-uppercase">Remove Part</a>
+                                        </div>
+                                    </td>                                
+                                </tr>
+                            </tbody>
+                        }
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="button-holder">
+    <a href="/AutoShop/AddPart?serviceId=@ViewBag.ServiceId" class="btn btn-info text-uppercase">Add Part</a>
+</div>

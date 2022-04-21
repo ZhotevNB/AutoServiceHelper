@@ -6,11 +6,12 @@ namespace AutoServiceHelper.Core.Models.Offers
     {
 
         public string Name { get; set; }
+        public Guid ServiceId { get; set; }
+
+        public Guid offerId { get; set; }
 
         public TypeActivity Type { get; set; }
-
-        public IList<PartsViewModel> Parts { get; set; } = new List<PartsViewModel>();
-
+      
         public double NeededHourOfWork { get; set; }
 
         public decimal PricePerHouer { get; set; }
