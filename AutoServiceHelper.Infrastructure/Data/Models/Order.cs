@@ -19,10 +19,9 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
         public Guid OfferId { get; set; }
 
         [ForeignKey(nameof(OfferId))]
-        public string Offer { get; set; }
+        public Offer Offer { get; set; }
 
-
-        public string MechanicId { get; set; }
+        public string? MechanicId { get; set; }
 
         public OrderStatus Status { get; set; } = OrderStatus.Waiting;
 
