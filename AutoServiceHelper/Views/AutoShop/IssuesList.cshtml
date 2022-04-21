@@ -5,7 +5,7 @@
 @*<div class="button-group" role="group" aria-label="Button group with nested dropdown">
     <a href="/Cars/MyCars" class="btn btn-info text-uppercase">Back to Garage</a>
 
-</div>*@
+    </div>*@
 
 <section class="py-2">
     <div class="container">
@@ -15,12 +15,9 @@
                     <tr>
                         <th scope="col">Manifacture</th>
                         <th scope="col">Model</th>
-                        <th scope="col">SubmitionDate</th>
-                        <th scope="col">Car Vin</th>
                         <th scope="col">Car Year</th>
                         <th scope="col">Car Color</th>
-                        <th scope="col">CarOdometer</th>
-                        <th scope="col">Description</th>
+                        <th scope="col">CarOdometer</th>                       
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -30,24 +27,41 @@
                     <tbody>
                         <tr>
                             <th scope="row">@issue.Car.Manifacture</th>
-                            <th scope="row">@issue.Car.Model</th>
-                            <td>@issue.SubmitionDate</td>
-                            <td>@issue.Car.Vin</td>
+                            <th scope="row">@issue.Car.Model</th>  
                             <td>@issue.Car.Year</td>
                             <td>@issue.Car.Color</td>
-                            <td>@issue.CarOdometer</td>
+                            <td>@issue.CarOdometer km</td>                            
                             <td>
-                                <div>
-                                    @issue.Description
+
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="@($"#A{issue.Car.Vin}")">
+                                    More Info
+                                </button>
+                                <!-- Modal -->
+                            <div class="modal fade" id="@($"A{issue.Car.Vin}")" tabindex="-1" role="dialog" aria-labelledby="ModalTitle" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="ModalTitle">Information</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">SubmitionDate: @issue.SubmitionDate</div>
+                                                <p></p>
+                                                 <div class="row">Description:   @issue.Description </div>
+                                                 <p></p>
+                                                 <div class="row">VIN : @issue.Car.Vin</div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <div class="button-holder">
+                                                    <a href="/AutoShop/AddOffer?issueId=@issue.Id" class="btn btn-info text-uppercase">Add offer</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
-                            <td>
-                                 <div class="button-holder">
-                                <a href="/AutoShop/AddOffer?issueId=@issue.Id" class="btn btn-info text-uppercase">Add offer</a>
-                            </div>                             
-
-                            </td>
-
                         </tr>
 
                     </tbody>
