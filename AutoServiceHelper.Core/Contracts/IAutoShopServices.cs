@@ -33,9 +33,6 @@ namespace AutoServiceHelper.Core.Contracts
 
         public Task<IEnumerable<OfferViewModel>> GetOffers(string shopId);
 
-        public Task<IEnumerable<PartsViewModel>> GetPartsForService(string serviceId);
-
-     
         public Task<string> GetOfferIdByServiceId(string serviceId);
 
 

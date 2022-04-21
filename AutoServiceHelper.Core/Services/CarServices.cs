@@ -1,11 +1,12 @@
 ﻿using AutoServiceHelper.Core.Contracts;
 using AutoServiceHelper.Core.Models.Cars;
 using AutoServiceHelper.Core.Models.Issues;
+using AutoServiceHelper.Core.Models.Offers;
 using AutoServiceHelper.Infrastructure.Data.Common;
 using AutoServiceHelper.Infrastructure.Data.Constants;
 using AutoServiceHelper.Infrastructure.Data.Models;
 using Microsoft.AspNetCore.Identity;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace AutoServiceHelper.Core.Services
 {
@@ -40,6 +41,26 @@ namespace AutoServiceHelper.Core.Services
                 repository.SaveChanges();
 
         }
+
+        public async Task< IEnumerable<CarViewModel>> AllCars(string userId)
+        {
+            var allCars = await repository
+                .All<Car>()
+                .Where(c => c.UserId == userId)
+                .Select(c => new CarViewModel
+                {
+                    Manifacture = c.Manifacture,
+                    Model = c.Model,
+                    Color = c.Color,
+                    Year = c.Year,
+                    Vin = c.Vin,
+                    Id = c.Id,
+                    UserId = c.UserId
+
+                })
+                .ToListAsync();
+            return allCars;
+        }
      
         public string AddIssue(AddIssueFormModel model,string carId,string userId)
         {
@@ -66,26 +87,6 @@ namespace AutoServiceHelper.Core.Services
             });
           repository.SaveChanges();
             return carId;
-        }
-
-        public IEnumerable<CarViewModel> AllCars(string userId)
-        {
-            var allCars = repository
-                .All<Car>()
-                .Where(c => c.UserId == userId)
-                .Select(c => new CarViewModel
-                {
-                    Manifacture = c.Manifacture,
-                    Model = c.Model,
-                    Color = c.Color,
-                    Year = c.Year,
-                    Vin = c.Vin,
-                    Id = c.Id,
-                    UserId = c.UserId
-
-                })
-                .ToList();
-            return allCars;
         }
 
         public IEnumerable<ViewIssueModel> ViewIssues(string id)
@@ -124,6 +125,36 @@ namespace AutoServiceHelper.Core.Services
 
             return issues;
         }
+
+        public async Task<IEnumerable<OfferViewModel>> ViewOffers(string carId)
+        {
+            var issueIds = await repository.All<Issue>()
+                .Where(x => x.CarId == carId)
+                .Select(x => x.Id)
+                .ToListAsync();
+
+
+            var result = await repository.All<Offer>()
+                .Where(x => issueIds.Any(i => x.IssueId == i))
+                .Select(x => new OfferViewModel()
+                {
+                    Id = x.Id,
+                    PartPrice = x.Services.Select(s => s.Parts.Sum(p => p.QuantitiNeeded * p.Price)),
+                    ServicePrice = x.Services.Sum(s => (decimal)s.NeededHourOfWork * s.PricePerHouer),
+                    SubmitionDate = x.SubmitionDate,
+                    AdditionalInfo = x.AdditionalInfo,
+                    IssueId = x.IssueId,
+                    ShopId = x.ShopId,
+
+                })
+                .ToListAsync();
+
+            foreach (var item in result)
+            {
+                item.TotalPrice = item.ServicePrice + item.PartPrice.Sum();
+            }
+            return result;
+        }
         public IEnumerable<string>GetIssueTypes()
         {
             return Enum.GetNames(typeof(TypeActivity)).ToList();
@@ -141,6 +172,9 @@ namespace AutoServiceHelper.Core.Services
 
            
         }
+
+   
+       
     }
-    
+
 }

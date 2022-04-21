@@ -292,22 +292,7 @@ namespace AutoServiceHelper.Core.Services
             }
             return result;
         }
-
-        public async Task<IEnumerable<PartsViewModel>> GetPartsForService(string serviceId)
-        {
-            return await repo.All<Part>()
-                .Where(x => x.ShopServiceId.ToString() == serviceId)
-                .Select(x => new PartsViewModel
-                {
-                    Name = x.Name,
-                    Price = x.Price,
-                    Id = x.Id.ToString(),
-                    Number = x.Number,
-                    QuantitiNeeded = x.QuantitiNeeded
-
-                }).ToListAsync();
-        }
-
+              
         public async Task<string> GetOfferIdByServiceId(string serviceId)
         {
             var result = await repo.All<ShopService>()

@@ -54,6 +54,33 @@ namespace AutoServiceHelper.Core.Services
             return result;
         }
 
+        public async Task<IEnumerable<PartsViewModel>> GetPartsForService(string serviceId)
+        {
+            return await repo.All<Part>()
+                .Where(x => x.ShopServiceId.ToString() == serviceId)
+                .Select(x => new PartsViewModel
+                {
+                    Name = x.Name,
+                    Price = x.Price,
+                    Id = x.Id.ToString(),
+                    Number = x.Number,
+                    QuantitiNeeded = x.QuantitiNeeded
 
+                }).ToListAsync();
+        }
+
+        public async Task<string>GetCarIdByOfferId(string offerId)
+        {
+            var issueId = await repo.All<Offer>()
+                .Where(x => x.Id.ToString() == offerId)
+                .Select(x => x.IssueId)
+                .FirstOrDefaultAsync();
+
+            var carId = await repo.All<Issue>()
+                .Where(x => x.Id == issueId)
+                .Select(x => x.CarId)
+                .FirstOrDefaultAsync();
+            return carId;
+        }
     }
 }
