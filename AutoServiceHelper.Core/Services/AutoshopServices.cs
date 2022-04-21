@@ -265,34 +265,7 @@ namespace AutoServiceHelper.Core.Services
             return result;
         }
 
-        public async Task<IEnumerable<ServiceViewModel>> GetServicesForOffer(string offerId)
-        {
-
-            var result = await repo.All<ShopService>()
-                .Where(x => x.OfferId.ToString() == offerId)
-                .Select(x => new ServiceViewModel()
-                {
-                    Name = x.Name,
-                    NeededHourOfWork = x.NeededHourOfWork,
-                    Type = x.Type,
-                    Price = x.Price,
-                    ServiceId=x.Id,
-                    offerId=x.OfferId
-                    
-                })
-                .ToListAsync();
-
-            foreach (var service in result)
-            {
-                service.Price += await repo.All<Part>()
-                    .Where(x => x.ShopServiceId == service.ServiceId)
-                    .Select(x => x.Price)
-                    .SumAsync();
-            }
-
-            return result;
-        }
-
+      
         public async Task<string> RemoveServiceFromOffer(string serviceId)
         {
             string result = null;
