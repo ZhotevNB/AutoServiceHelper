@@ -13,12 +13,15 @@ namespace AutoServiceHelper.Controllers
 
         private readonly UserManager<IdentityUser> userManager;
         private readonly IAutoShopServices shopServices;
+        private readonly IInformationServices infoServices;
 
         public AutoShopController(UserManager<IdentityUser> _userManager,
-            IAutoShopServices _shopService)
+            IAutoShopServices _shopService,
+            IInformationServices _infoServices)
         {
             userManager = _userManager;
             shopServices = _shopService;
+            infoServices = _infoServices;
 
         }
 
@@ -164,7 +167,7 @@ namespace AutoServiceHelper.Controllers
 
         public async Task<IActionResult> ServiceParts(string serviceId)
         {
-            var result= await shopServices.GetPartsForService(serviceId);
+            var result= await infoServices.GetPartsForService(serviceId);
             ViewBag.offerId = await shopServices.GetOfferIdByServiceId(serviceId);
             ViewBag.ServiceId = Guid.Parse(serviceId);
 
@@ -180,7 +183,7 @@ namespace AutoServiceHelper.Controllers
 
         public async Task<IActionResult> Services(string offerId)
         {
-            var model = await shopServices.GetServicesForOffer(offerId);
+            var model = await infoServices.GetServicesForOffer(offerId);
             ViewBag.OfferId = offerId;
             if (model == null)
             {

@@ -9,10 +9,14 @@ namespace AutoServiceHelper.Controllers
     public class CarsController : BaseController
     {
         private readonly ICarService carServices;
+        public readonly IInformationServices infoServices;
         private readonly UserManager<IdentityUser> userManager;
 
-        public CarsController(ICarService _carServices, UserManager<IdentityUser> _userManager)
+        public CarsController(ICarService _carServices, 
+            UserManager<IdentityUser> _userManager,
+            IInformationServices _infoServices)
         {
+            infoServices = _infoServices;
             carServices = _carServices;
             userManager = _userManager;
         }
@@ -42,11 +46,26 @@ namespace AutoServiceHelper.Controllers
             var user = await userManager.GetUserAsync(User);
             var currentUserId = await userManager.GetUserIdAsync(user);
 
-            var model = carServices.AllCars(currentUserId);
+            var model = await carServices.AllCars(currentUserId);
 
             return View(model);
         }
 
+        public async Task<IActionResult>Services(string offerId)
+        {
+            var carId = await infoServices.GetCarIdByOfferId(offerId);
+            var model = await infoServices.GetServicesForOffer(offerId);
+            ViewBag.CarId = carId;
+            return View(model);
+        }
+
+        public async Task<IActionResult>CarParts(string serviceId, string offerId)
+        {
+            var result = await infoServices.GetPartsForService(serviceId);
+            ViewBag.offerId = offerId;          
+
+            return View(result);
+        }
 
         public IActionResult Issues(string carId)
         {
@@ -55,6 +74,13 @@ namespace AutoServiceHelper.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult>CarOffer(string carId)
+        {
+            var model = await carServices.ViewOffers(carId);
+            ViewBag.CarId = carId;
+
+            return View(model);
+        }
 
         public IActionResult AddIssue(string id)
         {

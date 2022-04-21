@@ -1,0 +1,44 @@
+﻿@model IEnumerable<PartsViewModel>
+@{
+    ViewData["Title"] = "Parts";
+}
+<div class="button-holder">
+                            <a href="/Cars/Services?offerId=@ViewBag.offerId" class="btn btn-info text-uppercase">Back to service</a>
+                        </div>
+<section class="py-2">
+    <div class="container">
+        <div style="padding: 0px;">
+            <div class="card-body table-responsive p-0" style="height: 500px;">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead class="sidebar-dark-gray">
+                        <tr>
+                            <th>Part Name</th>
+                            <th>Indetification Number</th>
+                            <th>Price For Part</th>
+                            <th>Quantity</th>
+                            <th>Total Price</th>
+
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    @if (Model != null)
+                    {
+                        foreach (var part in Model)
+                        {
+                            <tbody>
+                                <tr>
+                                    <td scope="row">@part.Name</td>
+                                    <td>@part.Number</td>
+                                    <td>@part.Price</td>
+                                    <td>@part.QuantitiNeeded</td>                                                                   
+                                    <td>@(part.QuantitiNeeded*part.Price)</td>                                                                   
+                                </tr>
+                            </tbody>
+                        }
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</section>

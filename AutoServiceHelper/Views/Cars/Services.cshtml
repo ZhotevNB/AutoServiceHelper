@@ -1,0 +1,48 @@
+﻿@model IEnumerable<ServiceViewModel>
+
+@{
+    ViewData["Title"] = "Services";
+}
+<div class="button-holder">
+                            <a href="/Cars/CarOffer?carId=@ViewBag.CarId" class="btn btn-info text-uppercase">Back to Offers</a>
+                        </div>
+<section class="py-2">
+    <div class="container">
+        <div style="padding: 0px;">          
+            <div class="card-body table-responsive p-0" style="height: 500px;">
+                <table class="table table-head-fixed text-nowrap">
+                    <thead class="sidebar-dark-gray">
+                        <tr>
+                            <th>Service Name</th>
+                            <th>Working Hours</th>
+                            <th>Price</th>
+                            <th>Type</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    @foreach (var service in Model)
+                    {
+                        <tbody>
+                            <tr>
+                                <td scope="row">@service.Name</td>
+                                <td>@service.NeededHourOfWork</td>
+                                <td>@service.Price</td>
+                                <td>@service.Type</td>                                 
+                                <td>
+                                    <div class="button-holder">
+                                        <a href="/Cars/CarParts?serviceId=@service.ServiceId&offerId=@service.offerId" class="btn btn-info text-uppercase">Parts</a>
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    }
+                    
+                </table>                 
+            </div>
+        </div>
+    </div>
+</section>
+             

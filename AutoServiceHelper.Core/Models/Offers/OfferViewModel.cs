@@ -11,7 +11,9 @@
 
         public string AdditionalInfo { get; set; }
 
-        public decimal TotalPrice { get; set; }
+        public decimal? TotalPrice { get; set; } 
+        public IEnumerable<decimal> PartPrice { get; set; }
+        public decimal? ServicePrice { get; set; }
 
     }
 }
