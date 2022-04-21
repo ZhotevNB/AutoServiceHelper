@@ -13,9 +13,7 @@
                             <th scope="col">Model</th>
                             <th scope="col">VIN</th>
                             <th scope="col">Year</th>
-                            <th scope="col">Color</th>
-                            <th scope="col">Issues</th>
-                            <th scope="col">Orders</th>
+                            <th scope="col">Color</th>                           
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -30,19 +28,39 @@
                                 <td>@car.Year</td>
                                 <td>@car.Color</td>
                                 <td>
-                                    <div class="button-holder">
-                                        <a href="/Cars/Issues?carId=@car.Id" class="btn btn-info text-uppercase">Issues</a>
+                                    <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="@($"#A{car.Id}")">
+                                        Options
+                                    </button>
+
+                                    <!-- Modal -->
+                                <div class="modal fade" id="@($"A{car.Id}")" tabindex="-1" role="dialog" aria-labelledby="ModalTitle" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="ModalTitle">Options</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>                                               
+                                                <div class="modal-footer">
+                                                    <div class="button-holder">
+                                                        <a href="/Cars/Issues?carId=@car.Id" class="btn btn-info text-uppercase">Issues</a>
+                                                    </div>
+                                                     <div class="button-holder">
+                                                        <a href="/Cars/CarOffer?carId=@car.Id" class="btn btn-info text-uppercase">Offers</a>
+                                                    </div>
+                                                    <div class="button-holder">
+                                                        <a href="/Cars/Orders?carId=@car.Id" class="btn btn-info text-uppercase">Orders</a>
+                                                    </div>
+                                                    <div class="button-holder">
+                                                        <a href="/Cars/AddIssue?carId=@car.Id" class="btn btn-info text-uppercase">Add Issue</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </td>
-                                <td>
-                                    <div class="button-holder">
-                                        <a href="/Cars/Orders?carId=@car.Id" class="btn btn-info text-uppercase">Orders</a>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="button-holder">
-                                        <a href="/Cars/AddIssue?carId=@car.Id" class="btn btn-info text-uppercase">Add Issue</a>
-                                    </div>
+
                                 </td>
                             </tr>
 
@@ -54,3 +72,5 @@
         </div>
     </div>
 </section>
+
+                              
