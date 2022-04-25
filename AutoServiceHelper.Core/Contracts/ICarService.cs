@@ -15,11 +15,13 @@ namespace AutoServiceHelper.Core.Contracts
 
         public IEnumerable<ViewIssueModel> ViewIssues( string carId);
 
-        public Task<IEnumerable<OfferViewModel>> ViewOffers( string carId);      
+        public Task<IEnumerable<OfferViewModel>> ViewOffers( string issueId);      
 
         public IEnumerable<string> GetIssueTypes();
 
         public void FixIssue(string issueId);
 
+        public Task<string> OrderOffer(string offerId, string issueId);
+        public Task<string> GetCarIdByIssueId(string issueId);
     }
 }

@@ -53,9 +53,9 @@ namespace AutoServiceHelper.Controllers
 
         public async Task<IActionResult>Services(string offerId)
         {
-            var carId = await infoServices.GetCarIdByOfferId(offerId);
+            var issueId = await infoServices.GetIssueIdByOfferId(offerId);
             var model = await infoServices.GetServicesForOffer(offerId);
-            ViewBag.CarId = carId;
+            ViewBag.issueId = issueId;
             return View(model);
         }
 
@@ -74,14 +74,27 @@ namespace AutoServiceHelper.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult>CarOffer(string carId)
+        public async Task<IActionResult>CarOffer(string issueId)
         {
-            var model = await carServices.ViewOffers(carId);
-            ViewBag.CarId = carId;
+            var model = await carServices.ViewOffers(issueId);
+                var carId = await carServices.GetCarIdByIssueId(issueId);
+            ViewBag.CarId = carId.ToString();
 
             return View(model);
         }
 
+        public async Task<IActionResult> AcceptOffer(string offerId,string issueId)
+        {
+            var result = await carServices.OrderOffer(offerId, issueId);
+
+            if (result != null)
+            {
+                ViewData["ErrorMessage"] = result;
+            }
+
+            ViewData["SuccessMessage"] = "Order Successfull";
+            return RedirectToAction("MyCars",ViewData);
+        }
         public IActionResult AddIssue(string id)
         {
             var model = carServices.GetIssueTypes();

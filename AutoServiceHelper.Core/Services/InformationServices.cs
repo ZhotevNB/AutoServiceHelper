@@ -69,18 +69,15 @@ namespace AutoServiceHelper.Core.Services
                 }).ToListAsync();
         }
 
-        public async Task<string>GetCarIdByOfferId(string offerId)
+        public async Task<string>GetIssueIdByOfferId(string offerId)
         {
             var issueId = await repo.All<Offer>()
                 .Where(x => x.Id.ToString() == offerId)
                 .Select(x => x.IssueId)
                 .FirstOrDefaultAsync();
 
-            var carId = await repo.All<Issue>()
-                .Where(x => x.Id == issueId)
-                .Select(x => x.CarId)
-                .FirstOrDefaultAsync();
-            return carId;
+            
+            return issueId.ToString();
         }
     }
 }

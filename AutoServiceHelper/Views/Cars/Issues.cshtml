@@ -18,6 +18,7 @@
                         <th scope="col">SubmitionDate</th>
                         <th scope="col">Car Vin</th>
                         <th scope="col">CarOdometer</th>
+                        <th></th>
                         <th scope="col">Description</th>
                         <th scope="col"></th>
                     </tr>
@@ -32,6 +33,11 @@
                             <td>@issue.SubmitionDate</td>
                             <td>@issue.Car.Vin</td>
                             <td>@issue.CarOdometer</td>
+                            <td>
+                                <div class="button-holder">
+                                    <a href="/Cars/CarOffer?issueId=@issue.Id" class="btn btn-info text-uppercase">Offers</a>
+                                </div>
+                            </td>
                             <td>
                                 <div>
                                     @issue.Description

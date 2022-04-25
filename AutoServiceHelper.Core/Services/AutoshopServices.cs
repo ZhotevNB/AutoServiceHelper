@@ -127,7 +127,7 @@ namespace AutoServiceHelper.Core.Services
             {
                 var result = repo
                     .All<Issue>()
-                    .Where(x => x.Type == type && x.isFixed == false)
+                    .Where(x => x.Type == type && x.OfferID==null)
                     .Select(x => new ViewIssueModel
                     {
                         Id = x.Id,

@@ -27,11 +27,14 @@
                                 <td scope="row">@offer.SubmitionDate</td>
                                 <td>@offer.TotalPrice</td>
                                 <td>@offer.AdditionalInfo</td>
-                                <td>
+                               @if(!offer.IsSelected)
+                               {
+                                     <td>                                    
                                     <div class="button-holder">
                                         <a href="/Cars/AcceptOffer?offerId=@offer.Id&issueId=@offer.IssueId" class="btn btn-info text-uppercase">Order</a>
                                     </div>
                                 </td>
+                                }
                                 <td>
                                     <div class="button-holder">
                                         <a href="/Cars/Services?offerId=@offer.Id" class="btn btn-info text-uppercase">Services</a>

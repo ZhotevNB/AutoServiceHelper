@@ -13,13 +13,13 @@ namespace AutoServiceHelper.Core.Services
     public class CarServices : ICarService
     {
         private readonly IRepository repository;
-      
 
 
-        public CarServices(IRepository _repository )
+
+        public CarServices(IRepository _repository)
         {
             repository = _repository;
-         
+
         }
 
 
@@ -36,13 +36,13 @@ namespace AutoServiceHelper.Core.Services
                 UserId = userId
 
             };
-                     
-                repository.Add(newCar);
-                repository.SaveChanges();
+
+            repository.Add(newCar);
+            repository.SaveChanges();
 
         }
 
-        public async Task< IEnumerable<CarViewModel>> AllCars(string userId)
+        public async Task<IEnumerable<CarViewModel>> AllCars(string userId)
         {
             var allCars = await repository
                 .All<Car>()
@@ -61,31 +61,31 @@ namespace AutoServiceHelper.Core.Services
                 .ToListAsync();
             return allCars;
         }
-     
-        public string AddIssue(AddIssueFormModel model,string carId,string userId)
-        {
-           var milage =repository.All<Issue>()
-                .Where(x => x.CarId == carId)
-                  .OrderByDescending(x => x.SubmitionDate.Date)
-                .OrderByDescending(x => x.SubmitionDate.Hour)
-                .OrderByDescending(x => x.SubmitionDate.Minute)
-                .Select(x=>x.CarOdometer)
-                .FirstOrDefault();
 
-            if (milage>model.CarOdometer)
+        public string AddIssue(AddIssueFormModel model, string carId, string userId)
+        {
+            var milage = repository.All<Issue>()
+                 .Where(x => x.CarId == carId)
+                   .OrderByDescending(x => x.SubmitionDate.Date)
+                 .OrderByDescending(x => x.SubmitionDate.Hour)
+                 .OrderByDescending(x => x.SubmitionDate.Minute)
+                 .Select(x => x.CarOdometer)
+                 .FirstOrDefault();
+
+            if (milage > model.CarOdometer)
             {
-                
+
                 return "Invalid Operation";
             }
             repository.Add<Issue>(new Issue
             {
-                Type=model.Type,
+                Type = model.Type,
                 CarOdometer = model.CarOdometer,
                 Description = model.Description,
-                CarId=carId,
-                SubmitetByUserId=userId
+                CarId = carId,
+                SubmitetByUserId = userId
             });
-          repository.SaveChanges();
+            repository.SaveChanges();
             return carId;
         }
 
@@ -109,7 +109,7 @@ namespace AutoServiceHelper.Core.Services
                     Id = i.Id,
                     CarId = id,
                     Car = car,
-                    IsFixed=i.isFixed,
+                    IsFixed = i.isFixed,
                     CarOdometer = i.CarOdometer,
                     SubmitionDate = i.SubmitionDate,
                     Description = i.Description,
@@ -118,24 +118,24 @@ namespace AutoServiceHelper.Core.Services
                     Type = i.Type
 
                 })
-                .OrderByDescending(x=>x.SubmitionDate.Date)
-                .OrderByDescending(x=>x.SubmitionDate.Hour)
-                .OrderByDescending(x=>x.SubmitionDate.Minute)
+                .OrderByDescending(x => x.SubmitionDate.Date)
+                .OrderByDescending(x => x.SubmitionDate.Hour)
+                .OrderByDescending(x => x.SubmitionDate.Minute)
                 .ToList();
 
             return issues;
         }
 
-        public async Task<IEnumerable<OfferViewModel>> ViewOffers(string carId)
+        public async Task<IEnumerable<OfferViewModel>> ViewOffers(string issueId)
         {
-            var issueIds = await repository.All<Issue>()
-                .Where(x => x.CarId == carId)
-                .Select(x => x.Id)
-                .ToListAsync();
+            var issue = await repository.All<Order>()
+         .Where(x => x.IssueId.ToString() == issueId)
+         .Select(x => x.OfferId)
+         .FirstOrDefaultAsync();
 
 
             var result = await repository.All<Offer>()
-                .Where(x => issueIds.Any(i => x.IssueId == i))
+                .Where(x => x.IssueId.ToString() == issueId)
                 .Select(x => new OfferViewModel()
                 {
                     Id = x.Id,
@@ -149,20 +149,26 @@ namespace AutoServiceHelper.Core.Services
                 })
                 .ToListAsync();
 
+            if (issue!=Guid.Empty)
+            {
+                result = result.Where(x => x.Id == issue).ToList();
+                result.ForEach(x=>x.IsSelected=true);
+            }
+
             foreach (var item in result)
             {
                 item.TotalPrice = item.ServicePrice + item.PartPrice.Sum();
             }
             return result;
         }
-        public IEnumerable<string>GetIssueTypes()
+        public IEnumerable<string> GetIssueTypes()
         {
             return Enum.GetNames(typeof(TypeActivity)).ToList();
         }
 
         public void FixIssue(string issueId)
         {
-            var issue=repository.All<Issue>()
+            var issue = repository.All<Issue>()
                 .Where(x => x.Id.ToString() == issueId)
                 .First();
 
@@ -170,11 +176,47 @@ namespace AutoServiceHelper.Core.Services
 
             repository.SaveChanges();
 
-           
+
         }
 
-   
-       
+        public async Task<string> OrderOffer(string offerId, string issueId)
+        {
+            string result = null;
+            var order = new Order()
+            {
+                IssueId = Guid.Parse(issueId),
+                OfferId = Guid.Parse(offerId),
+
+            };
+
+            var issue = await repository.All<Issue>()
+                .Where(x => x.Id.ToString() == issueId)
+                .FirstOrDefaultAsync();
+
+            issue.OfferID = offerId;
+            issue.Status = IssueStatus.InProgress;
+
+            try
+            {
+                repository.Add(order);
+                repository.SaveChanges();
+            }
+            catch (Exception)
+            {
+                result = "Can not add Order";
+                throw;
+            }
+            return result;
+        }
+
+        public async Task<string> GetCarIdByIssueId(string issueId)
+        {
+            var resul = await repository.All<Issue>()
+                .Where(x => x.Id.ToString() == issueId)
+                .Select(x => x.CarId)
+                .FirstOrDefaultAsync();
+            return resul;
+        }
     }
 
 }
