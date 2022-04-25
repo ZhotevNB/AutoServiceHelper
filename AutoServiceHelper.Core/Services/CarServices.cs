@@ -2,6 +2,7 @@
 using AutoServiceHelper.Core.Models.Cars;
 using AutoServiceHelper.Core.Models.Issues;
 using AutoServiceHelper.Core.Models.Offers;
+using AutoServiceHelper.Core.Models.Orders;
 using AutoServiceHelper.Infrastructure.Data.Common;
 using AutoServiceHelper.Infrastructure.Data.Constants;
 using AutoServiceHelper.Infrastructure.Data.Models;
@@ -216,6 +217,71 @@ namespace AutoServiceHelper.Core.Services
                 .Select(x => x.CarId)
                 .FirstOrDefaultAsync();
             return resul;
+        }
+
+        public async Task<IEnumerable<OrderViewModel>> GetMyOrders(string carId)
+        {
+
+
+            var orders = await repository.All<Order>()
+                .Where(x => x.Issue.CarId==carId)
+                .Select(x => new OrderViewModel()
+                {
+                    Id = x.Id,
+                    IssueId = x.IssueId,
+                    Offer = new OfferViewModel()
+                    {
+                        AdditionalInfo = x.Offer.AdditionalInfo,
+                        SubmitionDate = x.Offer.SubmitionDate,
+                        IssueId = x.IssueId,
+                        Services = x.Offer.Services.Select(o => new ServiceViewModel()
+                        {
+                            Name = o.Name,
+                            Type = o.Type,
+                            NeededHourOfWork = o.NeededHourOfWork,
+                            PricePerHouer = o.PricePerHouer,
+                            ServiceId = o.Id,
+                            offerId = o.OfferId,
+                            Parts = x.Offer.Services.SelectMany(s => s.Parts.Select(p => new PartsViewModel()
+                            {
+                                Name = p.Name,
+                                QuantitiNeeded = p.QuantitiNeeded,
+                                Number = p.Number,
+                                Price = p.Price,
+                                Id = p.Id.ToString()
+                            })
+                              .ToList())
+                        }).ToList(),
+                        Id = x.OfferId,
+                        ShopId = x.OfferId.ToString()
+                    },
+                    Issue = new IssueOrderViewModel()
+                    {
+                        Description = x.Issue.Description,
+                        Car = new CarViewModel()
+                        {
+                            Color = x.Issue.Car.Color,
+                            Manifacture = x.Issue.Car.Manifacture,
+                            Model = x.Issue.Car.Model,
+                            Year = x.Issue.Car.Year,
+                            Vin = x.Issue.Car.Vin,
+                            Id = x.Issue.Car.Id,
+                            UserId = x.Issue.Car.UserId
+                        },
+                        SubmitionDate = x.Issue.SubmitionDate,
+                        Status = x.Issue.Status,
+                        CarId = x.Issue.CarId,
+                        IsFixed = x.Issue.isFixed,
+                        Type = x.Issue.Type,
+                        SubmitetByUserId = x.Issue.SubmitetByUserId
+
+                    }
+
+
+                })
+                .ToListAsync();
+
+            return orders;
         }
     }
 

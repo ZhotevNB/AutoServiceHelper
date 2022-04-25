@@ -131,12 +131,12 @@ namespace AutoServiceHelper.Controllers
             return RedirectToAction("MyCars");
         }
 
-        public IActionResult Orders(string id)
+        public async Task<IActionResult> Orders(string carId)
         {
             
-                
+                var model = await carServices.GetMyOrders(carId);
             
-            return View();
+            return View(model);
         }
     }
 }

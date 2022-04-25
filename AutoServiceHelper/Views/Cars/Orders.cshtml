@@ -1,63 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Car Issues ";
+﻿@model IEnumerable<OrderViewModel>
+<a href="/Cars/MyCars" class="btn btn-info text-uppercase">Back to Garage</a>
+@{
+    ViewData["CardName"] = "My orders";
 }
-<div class="button-group" role="group" aria-label="Button group with nested dropdown">
-    <a href="/Cars/MyCars" class="btn btn-info text-uppercase">Back to Garage</a>
-
-</div>
-
-<section class="py-2">
-    <div class="container">
-        <div style="padding: 1%;">
-            <table class="table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">Type</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">SubmitionDate</th>
-                        <th scope="col">Car Vin</th>
-                        <th scope="col">CarOdometer</th>
-                        <th scope="col">Description</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-
-             @*   @foreach (var issue in Model)
-                {
-                    <tbody>
-                        <tr>
-                            <th scope="row">@issue.Type</th>
-                            <th scope="row">@issue.Status</th>
-                            <td>@issue.SubmitionDate</td>
-                            <td>@issue.Car.Vin</td>
-                            <td>@issue.CarOdometer</td>
-                            <td>
-                                <div>
-                                    @issue.Description
-                                </div>
-                            </td>
-                            <td>
-                                @if (!issue.IsFixed)
-                                {
-                                    <div class="button-holder">
-                                        <a href="/Cars/FixIssue?issueId=@issue.Id" class="btn btn-info text-uppercase">Fix</a>
-                                    </div>
-                                }
-                                @if (issue.IsFixed)
-                                {
-
-                                    <a class="badge badge-success text-uppercase">Fixed</a>
-                                }
-
-                            </td>
-
-                        </tr>
-
-                    </tbody>
-                }*@
-            </table>
-
-        </div>
-    </div>
-
-</section>
+<p></p>
+ <partial name="_OrdersList"/>

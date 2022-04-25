@@ -1,6 +1,7 @@
 ﻿using AutoServiceHelper.Core.Models.Cars;
 using AutoServiceHelper.Core.Models.Issues;
 using AutoServiceHelper.Core.Models.Offers;
+using AutoServiceHelper.Core.Models.Orders;
 
 namespace AutoServiceHelper.Core.Contracts
 {
@@ -23,5 +24,7 @@ namespace AutoServiceHelper.Core.Contracts
 
         public Task<string> OrderOffer(string offerId, string issueId);
         public Task<string> GetCarIdByIssueId(string issueId);
+
+        public  Task<IEnumerable<OrderViewModel>> GetMyOrders(string carId);
     }
 }
