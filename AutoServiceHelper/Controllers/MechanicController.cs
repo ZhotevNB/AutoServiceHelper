@@ -63,6 +63,22 @@ namespace AutoServiceHelper.Controllers
             var result = await mechanicServices.GetMyOrders(userId);
             return View(result);
         }
+        [HttpPost]
+        public async Task<IActionResult> MechanicOrder(string orderId)
+        {
+            var userId = await GetUserId();
+            var msg = await mechanicServices.CompleteOrder(orderId);
+            if (msg == "Error")
+            {
+                ViewData["ErrorMessage"] = msg;
+            }
+            else
+            {
+                ViewData["SuccessMessage"] = msg;
+            }
+            var result = await mechanicServices.GetMyOrders(userId);
+            return View(result);
+        }
 
         public async Task<IActionResult> FreeOrders()
         {

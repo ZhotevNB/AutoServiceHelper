@@ -252,5 +252,35 @@ namespace AutoServiceHelper.Core.Services
             }
             return result;
         }
+
+        public async Task<string> CompleteOrder(string orderId)
+        {
+            string result = null;
+
+            var order = await repo.All<Order>()
+                .Where(x => x.Id.ToString() == orderId)
+                .FirstOrDefaultAsync();
+
+            order.Status = OrderStatus.Compled;
+
+            var issue = await repo.All<Issue>()
+                .Where(x => x.Id == order.IssueId)
+                .FirstOrDefaultAsync();
+
+            issue.Status=IssueStatus.Completed;
+            issue.isFixed = true;
+
+            try
+            {
+                repo.SaveChanges();
+                result = "Successfull complete Order";
+            }
+            catch (Exception)
+            {
+                result="Error"; 
+                throw;
+            }
+           return result;
+        }
     }
 }

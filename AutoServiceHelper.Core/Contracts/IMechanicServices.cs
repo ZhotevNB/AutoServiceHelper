@@ -16,5 +16,6 @@ namespace AutoServiceHelper.Core.Contracts
         public Task<IEnumerable<OrderViewModel>> GetMyOrders(string userId);
 
         public Task<string> PreservingOrders(string userId,string orderId);
+        public Task<string> CompleteOrder(string orderId);
     }
 }

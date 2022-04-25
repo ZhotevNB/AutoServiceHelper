@@ -1,4 +1,6 @@
-﻿<div class="card card-secondary">
+﻿@model IEnumerable<OrderViewModel>
+
+<div class="card card-secondary">
     <div class="card-header">
         <h3 class="card-title">@ViewData["CardName"]</h3>
     </div>
@@ -177,6 +179,12 @@
                                                         <input type="hidden" id="orderId" name="orderId" value="@order.Id">                                                
                                                         <button type="submit" class="btn btn-primary">Fix</button>
                                                     </form>
+                                                </td>
+                                            }
+                                            @if(ViewData["CardName"] =="Mechanic Orders" && (order.Issue.IsFixed))
+                                            {
+                                                <td>
+                                                <span class="badge bg-success">Fixed</span>
                                                 </td>
                                             }
                                         </tr>
