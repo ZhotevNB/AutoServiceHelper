@@ -2,7 +2,7 @@
 {
     public enum OrderStatus
     {
-        Waiting,
+        WaitingForMechanic,
         InProgress,
         Compled
     }

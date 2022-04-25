@@ -1,0 +1,193 @@
+﻿<div class="card card-secondary">
+    <div class="card-header">
+        <h3 class="card-title">@ViewData["CardName"]</h3>
+    </div>
+    <div class="card-body">
+        <section class="py-10">
+            <div class="container">
+                <div style="padding: 5px;">
+                    <div class="card-body table-responsive p-0" style="height: 500px;">
+                        <table class="table table-head-fixed text-nowrap pace-progress-color-blue">
+                            <thead class="sidebar-dark-gray">
+                                <tr>
+                                    <th scope="col">Issue</th>
+
+                                </tr>
+                            </thead>
+                            
+                                @if (Model==null)
+                                {
+                                    <th>No Orders Found </th>
+                                }
+                                @if(Model!=null)
+                                {
+                            @foreach (var order in Model)
+                            {
+                                <tbody>
+                                    <tr>
+                                        <td scope="row">@order.Issue.Description</td>
+                                        <td>
+                                            <p>
+                                                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#@($"A{order.Offer.Id}")" aria-expanded="false" aria-controls="@($"A{order.Offer.Id}")">
+                                                    Offer Info
+                                                </button>
+                                            </p>
+                                            <div class="collapse" id="@($"A{order.Offer.Id}")">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="width: 10px">#</th>
+                                                            <th>Key</th>
+                                                            <th>Value</th>
+                                                            <th></th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>1.</td>
+                                                            <td>Offer Information</td>
+                                                            <td>@(order.Offer.AdditionalInfo) </td>
+                                                        </tr>
+                                                        @foreach (var service in order.Offer.Services)
+                                                        {
+                                                            <tr>
+                                                                <td></td>
+                                                                <th>Services</th>
+                                                                <th>Houers Work</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>*</td>
+                                                                <td>@service.Name</td>
+                                                                <td>@service.NeededHourOfWork</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td>-</td>
+                                                                <th>Part Name</th>
+                                                                <th>Quantiti Needed</th>
+                                                                <th>Part Number</th>
+                                                            </tr>
+                                                            @foreach (var part in service.Parts)
+                                                            {
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td>-</td>
+                                                                    <td>@part.Name</td>
+                                                                    <td>@part.QuantitiNeeded</td>
+                                                                    <td>@part.Number</td>
+                                                                </tr>
+                                                            }
+
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p>
+                                                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#@($"A{order.IssueId}")" aria-expanded="false" aria-controls="@($"A{order.IssueId}")">
+                                                    Issue Info
+                                                </button>
+                                            </p>
+                                            <div class="collapse" id="@($"A{order.IssueId}")">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="width: 10px">#</th>
+                                                            <th>Key</th>
+                                                            <th>Value</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>1.</td>
+                                                            <td>Issue Status</td>
+                                                            <td>@(order.Issue.Status) </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>2.</td>
+                                                            <td>Issue Type</td>
+                                                            <td>@(order.Issue.Type)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>3.</td>
+                                                            <td>Issue Submition Date</td>
+                                                            <td>@(order.Issue.SubmitionDate)</td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p>
+                                                <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#@($"A{order.Id}")" aria-expanded="false" aria-controls="@($"A{order.Id}")">
+                                                    Car Info
+                                                </button>
+                                            </p>
+                                            <div class="collapse" id="@($"A{order.Id}")">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th style="width: 10px">#</th>
+                                                            <th>Key</th>
+                                                            <th>Value</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>1.</td>
+                                                            <td>Car Make</td>
+                                                            <td>@(order.Issue.Car.Manifacture) </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>2.</td>
+                                                            <td>Car Model</td>
+                                                            <td>@(order.Issue.Car.Model)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>3.</td>
+                                                            <td>Car Year</td>
+                                                            <td>@(order.Issue.Car.Year)</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>3.</td>
+                                                            <td>Car Color</td>
+                                                            <td>@(order.Issue.Car.Color)</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                            @if (ViewData["CardName"] == "Waiting orders")
+                                            {
+                                                <td>
+                                                    <form method="post">                                              
+                                                        <input type="hidden" id="orderId" name="orderId" value="@order.Id">                                                
+                                                        <button type="submit" class="btn btn-primary">Get Order</button>
+                                                    </form>
+                                                </td>
+                                            }
+                                            @if(ViewData["CardName"] =="Mechanic Orders" && (!order.Issue.IsFixed))
+                                            {
+                                                 <td>
+                                                    <form method="post">                                              
+                                                        <input type="hidden" id="orderId" name="orderId" value="@order.Id">                                                
+                                                        <button type="submit" class="btn btn-primary">Fix</button>
+                                                    </form>
+                                                </td>
+                                            }
+                                        </tr>
+
+                                </tbody>
+                            }}
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

@@ -4,8 +4,8 @@
     ViewData["Title"] = "Car offers";
 }
 <div class="button-holder">
-                            <a href="/Cars/MyCars" class="btn btn-info text-uppercase">Back to My Cars</a>
-                        </div>
+    <a href="/Cars/MyCars" class="btn btn-info text-uppercase">Back to My Cars</a>
+</div>
 <section class="py-2">
     <div class="container">
         <div style="padding: 0px;">
@@ -26,12 +26,18 @@
                             <tr>
                                 <td scope="row">@offer.SubmitionDate</td>
                                 <td>@offer.TotalPrice</td>
-                                <td>@offer.AdditionalInfo</td>                                
+                                <td>@offer.AdditionalInfo</td>
                                 <td>
                                     <div class="button-holder">
-                                        <a href="/Cars/Services?offerId=@offer.Id" class="btn btn-info text-uppercase">Service</a>
+                                        <a href="/Cars/AcceptOffer?offerId=@offer.Id&issueId=@offer.IssueId" class="btn btn-info text-uppercase">Order</a>
                                     </div>
-                                </td>                               
+                                </td>
+                                <td>
+                                    <div class="button-holder">
+                                        <a href="/Cars/Services?offerId=@offer.Id" class="btn btn-info text-uppercase">Services</a>
+                                    </div>
+                                </td>
+
                             </tr>
 
                         </tbody>

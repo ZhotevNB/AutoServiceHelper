@@ -14,6 +14,8 @@ namespace AutoServiceHelper.Core.Models.Offers
       
         public double NeededHourOfWork { get; set; }
 
+        public IEnumerable<PartsViewModel> Parts { get; set; }
+
         public decimal PricePerHouer { get; set; }
 
         public decimal Price { get; set; }

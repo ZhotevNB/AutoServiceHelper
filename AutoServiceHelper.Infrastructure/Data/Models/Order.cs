@@ -23,7 +23,7 @@ namespace AutoServiceHelper.Infrastructure.Data.Models
 
         public string? MechanicId { get; set; }
 
-        public OrderStatus Status { get; set; } = OrderStatus.Waiting;
+        public OrderStatus Status { get; set; } = OrderStatus.WaitingForMechanic;
 
       
         [Range(DataConstants.OddometerMinValue, DataConstants.OddometerMaxValue)]
