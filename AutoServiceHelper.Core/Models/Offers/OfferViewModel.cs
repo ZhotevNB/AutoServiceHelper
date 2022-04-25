@@ -7,6 +7,8 @@
 
         public string ShopId { get; set; }
 
+        public string? ShopName { get; set; }
+
         public DateTime SubmitionDate { get; set; }       
 
         public string AdditionalInfo { get; set; }

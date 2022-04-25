@@ -23,8 +23,7 @@ namespace AutoServiceHelper.Core.Contracts
         public void FixIssue(string issueId);
 
         public Task<string> OrderOffer(string offerId, string issueId);
-        public Task<string> GetCarIdByIssueId(string issueId);
-
+        public Task<string> GetCarIdByIssueId(string issueId);      
         public  Task<IEnumerable<OrderViewModel>> GetMyOrders(string carId);
     }
 }

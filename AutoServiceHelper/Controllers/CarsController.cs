@@ -79,6 +79,7 @@ namespace AutoServiceHelper.Controllers
             var model = await carServices.ViewOffers(issueId);
                 var carId = await carServices.GetCarIdByIssueId(issueId);
             ViewBag.CarId = carId.ToString();
+           
 
             return View(model);
         }

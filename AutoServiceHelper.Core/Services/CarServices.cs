@@ -159,6 +159,7 @@ namespace AutoServiceHelper.Core.Services
             foreach (var item in result)
             {
                 item.TotalPrice = item.ServicePrice + item.PartPrice.Sum();
+                item.ShopName = await GetShopName(item.ShopId);
             }
             return result;
         }
@@ -282,6 +283,16 @@ namespace AutoServiceHelper.Core.Services
                 .ToListAsync();
 
             return orders;
+        }
+
+        private async Task<string> GetShopName(string id)
+        {
+            var result = await repository.All<AutoShop>()
+                 .Where(x => x.Id.ToString() == id)
+                 .Select(x => x.Name)
+                 .FirstOrDefaultAsync();
+
+            return result;
         }
     }
 
