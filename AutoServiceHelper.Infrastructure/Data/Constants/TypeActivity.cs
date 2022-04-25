@@ -5,7 +5,7 @@
         EnginElectrical,
         EnginMechanical,
         GearboxMechanical,
-        GearboxElectrival,
+        GearboxElectrical,
         ChassiMechanical,
         ChassiElectrical,
         SuspensionMechanical,
