@@ -3,6 +3,7 @@ using AutoServiceHelper.Core.Services;
 using AutoServiceHelper.Infrastructure.Data;
 using AutoServiceHelper.Infrastructure.Data.Common;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,11 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddControllersWithViews(options =>
+{ 
+    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+}) ;
 
 builder.Services.AddTransient<ICarService, CarServices>();
 builder.Services.AddTransient<IAutoShopServices, AutoshopServices>();

@@ -1,4 +1,6 @@
-﻿namespace AutoServiceHelper.Core.Models.Offers
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AutoServiceHelper.Core.Models.Offers
 {
     public class AddOfferViewModel
     {
@@ -6,6 +8,7 @@
 
         public string ShopId { get; set; }
 
+        [Required()]
         public string AdditionalInfo { get; set; }
 
     }
