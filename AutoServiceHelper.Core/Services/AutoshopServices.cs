@@ -42,9 +42,9 @@ namespace AutoServiceHelper.Core.Services
                 AdditionalInfo = model.AdditionalInfo
             };
 
-            repo.Add(offer);
             try
             {
+                repo.Add(offer);
                 repo.SaveChanges();
             }
             catch (Exception)
@@ -81,11 +81,11 @@ namespace AutoServiceHelper.Core.Services
                 throw;
             }
 
-            
+
             return result;
         }
 
-        public async Task<string> AddServiceToOffer(AddShopServiceViewModel model,Guid shopId)
+        public async Task<string> AddServiceToOffer(AddShopServiceViewModel model, Guid shopId)
         {
             string msg = null;
 
@@ -101,9 +101,9 @@ namespace AutoServiceHelper.Core.Services
                 OfferId = Guid.Parse(model.offerId),
                 Type = model.Type,
                 PricePerHouer = shopPricePerHour,
-                Price=shopPricePerHour*(decimal)model.NeededHourOfWork
+                Price = shopPricePerHour * (decimal)model.NeededHourOfWork
             };
-            
+
             try
             {
                 repo.Add(service);
@@ -116,50 +116,40 @@ namespace AutoServiceHelper.Core.Services
             }
             return msg;
         }
-              
+
         //Implemented
         public async Task<IEnumerable<ViewIssueModel>> GetIssues(string userId)
         {
             var types = await GetShopTypes(userId);
-            var issues = new List<ViewIssueModel>();
 
-            foreach (var type in types)
-            {
-                var result = repo
-                    .All<Issue>()
-                    .Where(x => x.Type == type && x.OfferID==null)
-                    .Select(x => new ViewIssueModel
-                    {
-                        Id = x.Id,
-                        CarId = x.CarId,
-                        CarOdometer = x.CarOdometer,
-                        Description = x.Description,
-                        SubmitionDate = x.SubmitionDate,
-                        Status = x.Status,
-                        SubmitetByUserId = x.SubmitetByUserId,
-                        IsFixed = x.isFixed,
-                        Type = x.Type
+            var result = await repo.All<Issue>()                
+                .Where(x=>x.OfferID==null)
+                 .Select(x => new ViewIssueModel
+                 {
+                     Id = x.Id,
+                     CarId = x.CarId,
+                     CarOdometer = x.CarOdometer,
+                     Description = x.Description,
+                     SubmitionDate = x.SubmitionDate,
+                     Status = x.Status,
+                     SubmitetByUserId = x.SubmitetByUserId,
+                     IsFixed = x.isFixed,
+                     Type = x.Type,
+                     Car = new CarViewModel
+                     {
+                         Id = x.Car.Id,
+                         Color = x.Car.Color,
+                         Vin = x.Car.Vin,
+                         Manifacture = x.Car.Manifacture,
+                         Model = x.Car.Model,
+                         Year = x.Car.Year
 
-                    }).ToList();
-                issues.AddRange(result);
-            }
+                     }
+                 }).ToListAsync();
 
-            foreach (var issue in issues)
-            {
-                issue.Car = repo
-                    .All<Car>()
-                    .Where(x => x.Id == issue.CarId)
-                    .Select(c => new CarViewModel
-                    {
-                        Id = c.Id,
-                        Color = c.Color,
-                        Vin = c.Vin,
-                        Manifacture = c.Manifacture,
-                        Model = c.Model,
-                        Year = c.Year
-                    }).First();
-            }
-            return issues;
+            result = result.Where(x => types.Any(t => t == x.Type)).ToList();
+                     
+            return result;
         }
 
         //Implemented
@@ -173,20 +163,20 @@ namespace AutoServiceHelper.Core.Services
                      AdditionalInfo = x.AdditionalInfo,
                      IssueId = x.IssueId,
                      SubmitionDate = x.SubmitionDate,
-                     TotalPrice = x.Services.Sum(s=>s.Price),
+                     TotalPrice = x.Services.Sum(s => s.Price),
                      ShopId = x.ShopId
-                 
+
                  }).ToListAsync();
 
             foreach (var item in result)
             {
-              var partsPriceList=  await repo.All<ShopService>()
-                    .Where(x=>x.OfferId==item.Id)
-                    .Select(x=>x.Parts.Sum(p=>p.Price)).ToListAsync();
+                var partsPriceList = await repo.All<ShopService>()
+                      .Where(x => x.OfferId == item.Id)
+                      .Select(x => x.Parts.Sum(p => p.Price)).ToListAsync();
 
                 item.TotalPrice += partsPriceList.Sum();
             }
-          
+
             return result;
         }
 
@@ -238,7 +228,7 @@ namespace AutoServiceHelper.Core.Services
 
         }
 
-       
+
         public async Task<AutoShopInfoModel> GetShopInfo(string managerId)
         {
             var result = await repo.All<AutoShop>()
@@ -265,7 +255,7 @@ namespace AutoServiceHelper.Core.Services
             return result;
         }
 
-      
+
         public async Task<string> RemoveServiceFromOffer(string serviceId)
         {
             string result = null;
@@ -278,7 +268,7 @@ namespace AutoServiceHelper.Core.Services
                 .ToListAsync();
             try
             {
-                if (serviceParts!=null)
+                if (serviceParts != null)
                 {
                     repo.DeleteRange(serviceParts);
                 }
@@ -292,7 +282,7 @@ namespace AutoServiceHelper.Core.Services
             }
             return result;
         }
-              
+
         public async Task<string> GetOfferIdByServiceId(string serviceId)
         {
             var result = await repo.All<ShopService>()
