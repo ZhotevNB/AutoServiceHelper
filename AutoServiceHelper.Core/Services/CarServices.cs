@@ -38,8 +38,16 @@ namespace AutoServiceHelper.Core.Services
 
             };
 
-            repository.Add(newCar);
-            repository.SaveChanges();
+            try
+            {
+                repository.Add(newCar);
+                repository.SaveChanges();
+            }
+            catch (Exception )
+            {
+                
+                throw new InvalidOperationException("Car was not addet");
+            }
 
         }
 
@@ -86,30 +94,37 @@ namespace AutoServiceHelper.Core.Services
                 CarId = carId,
                 SubmitetByUserId = userId
             });
-            repository.SaveChanges();
+            try
+            {
+                repository.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw new InvalidOperationException("Could not update DB");
+            }
             return carId;
         }
 
         public async Task<IEnumerable<ViewIssueModel>> ViewIssues(string id)
         {
-            var car = await repository.All<Car>().Where(c => c.Id == id).Select(c => new CarViewModel
-            {
-                Manifacture = c.Manifacture,
-                Model = c.Model,
-                Color = c.Color,
-                Year = c.Year,
-                Vin = c.Vin,
-                Id = c.Id,
-                UserId = c.UserId
-            }).FirstAsync();
-
+           
             var issues =  await repository.All<Issue>()
                 .Where(i => i.CarId == id)
                 .Select(i => new ViewIssueModel
                 {
                     Id = i.Id,
                     CarId = id,
-                    Car = car,
+                    Car = new CarViewModel()
+                    {
+                        Manifacture = i.Car.Manifacture,
+                        Model = i.Car.Model,
+                        Color = i.Car.Color,
+                        Year = i.Car.Year,
+                        Vin = i.Car.Vin,
+                        Id = i.Car.Id,
+                        UserId = i.Car.UserId
+                    },
                     IsFixed = i.isFixed,
                     CarOdometer = i.CarOdometer,
                     SubmitionDate = i.SubmitionDate,

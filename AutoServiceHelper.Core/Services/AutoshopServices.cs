@@ -25,13 +25,7 @@ namespace AutoServiceHelper.Core.Services
             userManager = _userManager;
 
         }
-
-        public Task<string> AddMechanicToOrder(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        //Inplemented
+              
         public async Task<string> AddOffer(AddOfferViewModel model)
         {
             string result = null;
@@ -117,7 +111,6 @@ namespace AutoServiceHelper.Core.Services
             return msg;
         }
 
-        //Implemented
         public async Task<IEnumerable<ViewIssueModel>> GetIssues(string userId)
         {
             var types = await GetShopTypes(userId);
@@ -152,7 +145,6 @@ namespace AutoServiceHelper.Core.Services
             return result;
         }
 
-        //Implemented
         public async Task<IEnumerable<OfferViewModel>> GetOffers(string shopId)
         {
             var result = await repo.All<Offer>()
@@ -180,23 +172,18 @@ namespace AutoServiceHelper.Core.Services
             return result;
         }
 
-        //implemented
         public async Task<Guid> GetShopID(string userId)
         {
             var re = await repo.All<AutoShop>()
-                .Where(x => x.ManegerId == userId)
+                .ToListAsync();
+
+                var shopId=re.Where(x => x.ManegerId == userId)
                 .Select(x => x.Id)
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
 
-            return re;
+            return shopId;
         }
-
-        public Task<IEnumerable<ViewIssueModel>> GetShopOrders(string shopId)
-        {
-            throw new NotImplementedException();
-        }
-
-        //Implemented
+        
         public async Task<IEnumerable<TypeActivity>> GetShopTypes(string userId)
         {
 
@@ -216,7 +203,6 @@ namespace AutoServiceHelper.Core.Services
 
         }
 
-        //Implemented
         public async Task<IEnumerable<TypeActivity>> GetTypesActivity()
         {
 
@@ -255,6 +241,15 @@ namespace AutoServiceHelper.Core.Services
             return result;
         }
 
+        public async Task<string> GetOfferIdByServiceId(string serviceId)
+        {
+            var result = await repo.All<ShopService>()
+                  .Where(x => x.Id.ToString() == serviceId)
+                  .Select(x => x.OfferId)
+                  .FirstOrDefaultAsync();
+
+            return result.ToString();
+        }
 
         public async Task<string> RemoveServiceFromOffer(string serviceId)
         {
@@ -263,6 +258,7 @@ namespace AutoServiceHelper.Core.Services
             var service = await repo.All<ShopService>()
                  .Where(x => x.Id.ToString() == serviceId)
                  .FirstOrDefaultAsync();
+
             var serviceParts = await repo.All<Part>()
                 .Where(x => x.ShopServiceId.ToString() == serviceId)
                 .ToListAsync();
@@ -282,17 +278,7 @@ namespace AutoServiceHelper.Core.Services
             }
             return result;
         }
-
-        public async Task<string> GetOfferIdByServiceId(string serviceId)
-        {
-            var result = await repo.All<ShopService>()
-                  .Where(x => x.Id.ToString() == serviceId)
-                  .Select(x => x.OfferId)
-                  .FirstOrDefaultAsync();
-
-            return result.ToString();
-        }
-
+               
         public async Task<string> RemovePartFromService(string partId)
         {
             string result = null;
