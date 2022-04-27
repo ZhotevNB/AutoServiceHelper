@@ -78,17 +78,7 @@ namespace AutoServiceHelper.Test.Services
             var cars = await service.AllCars(userId);
             var count = cars.Count();
             Assert.AreEqual(2,count);
-        }
-        [Test]
-        public async Task GetUncorectAllCarsCount()
-        {
-
-            var service = serviceProvider.GetService<ICarService>();
-            var cars = await service.AllCars(userId);
-            var count = cars.Count();
-            Assert.AreNotEqual(1, count);
-            Assert.AreNotEqual(3, count);
-        }
+        }       
         [Test]
         public async Task AddIssueSuccsesfull()
         {
@@ -142,6 +132,26 @@ namespace AutoServiceHelper.Test.Services
             var result=await service.AddIssue(issue2,carId,userId);
             Assert.AreEqual("Milage are less than the previos issue",result);
         }
+        [Test]
+        public async Task GetCorectCarIssueCount()
+        {
+
+            var service = serviceProvider.GetService<ICarService>();
+            var  repo = serviceProvider.GetService<IRepository>();
+            var car= await repo.All<Car>().Where(x=>x.UserId==userId).FirstOrDefaultAsync();
+            var isseToAdd= new AddIssueFormModel()
+            {
+                Type = TypeActivity.BodyElectrical,
+                Description = "Kolkoto Poveche Tolkova Poveche",
+                CarOdometer = 1120
+            };
+            service.AddIssue(isseToAdd, car.Id, userId);
+            var issues = await service.ViewIssues(car.Id);
+            var count = issues.Count();
+
+            Assert.AreEqual(1, count);
+        }       
+
         [TearDown]
         public void Teardown()
         {
@@ -179,6 +189,7 @@ namespace AutoServiceHelper.Test.Services
                 UserId = userId,
             
             };
+            
             repo.Add(user);
             repo.Add(car1);
             repo.Add(car2);

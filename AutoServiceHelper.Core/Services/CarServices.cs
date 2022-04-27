@@ -144,7 +144,7 @@ namespace AutoServiceHelper.Core.Services
 
         public async Task<IEnumerable<OfferViewModel>> ViewOffers(string issueId)
         {
-            var issue = await repository.All<Order>()
+            var offerId = await repository.All<Order>()
          .Where(x => x.IssueId.ToString() == issueId)
          .Select(x => x.OfferId)
          .FirstOrDefaultAsync();
@@ -165,9 +165,9 @@ namespace AutoServiceHelper.Core.Services
                 })
                 .ToListAsync();
 
-            if (issue!=Guid.Empty)
+            if (offerId!=Guid.Empty)
             {
-                result = result.Where(x => x.Id == issue).ToList();
+                result = result.Where(x => x.Id == offerId).ToList();
                 result.ForEach(x=>x.IsSelected=true);
             }
 

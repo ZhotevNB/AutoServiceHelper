@@ -3,11 +3,9 @@ using AutoServiceHelper.Core.Models.AutoShop;
 using AutoServiceHelper.Core.Models.Cars;
 using AutoServiceHelper.Core.Models.Issues;
 using AutoServiceHelper.Core.Models.Offers;
-using AutoServiceHelper.Infrastructure.Data;
 using AutoServiceHelper.Infrastructure.Data.Common;
 using AutoServiceHelper.Infrastructure.Data.Constants;
 using AutoServiceHelper.Infrastructure.Data.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoServiceHelper.Core.Services
@@ -15,14 +13,13 @@ namespace AutoServiceHelper.Core.Services
     public class AutoshopServices : IAutoShopServices
     {
         private readonly IRepository repo;
-        private readonly UserManager<IdentityUser> userManager;
+      
 
 
-        public AutoshopServices(IRepository _repo,
-            UserManager<IdentityUser> _userManager)
+        public AutoshopServices(IRepository _repo)
         {
             repo = _repo;
-            userManager = _userManager;
+            
 
         }
               
@@ -44,10 +41,42 @@ namespace AutoServiceHelper.Core.Services
             catch (Exception)
             {
                 result = "Invalid Operation";
-                throw;
+                throw new InvalidOperationException("Offer was not addet");
             }
 
             return result;
+        }
+
+        public async Task<string> AddServiceToOffer(AddShopServiceViewModel model, Guid shopId)
+        {
+            string msg = null;
+
+            var shopPricePerHour = await repo.All<AutoShop>()
+                .Where(x => x.Id == shopId)
+                .Select(x => x.PricePerHour)
+                .FirstOrDefaultAsync();
+
+            var service = new ShopService()
+            {
+                Name = model.Name,
+                NeededHourOfWork = model.NeededHourOfWork,
+                OfferId = Guid.Parse(model.offerId),
+                Type = model.Type,
+                PricePerHouer = shopPricePerHour,
+                Price = shopPricePerHour * (decimal)model.NeededHourOfWork
+            };
+
+            try
+            {
+                repo.Add(service);
+                repo.SaveChanges();
+            }
+            catch (Exception)
+            {
+                msg = "Error";
+                throw new InvalidOperationException("Could not update DB");
+            }
+            return msg;
         }
 
         public async Task<string> AddPartToService(AddPartViewModel model)
@@ -72,43 +101,11 @@ namespace AutoServiceHelper.Core.Services
             catch (Exception)
             {
                 result = "Invalid Operation";
-                throw;
+                throw new InvalidOperationException("Could not update DB");
             }
 
 
             return result;
-        }
-
-        public async Task<string> AddServiceToOffer(AddShopServiceViewModel model, Guid shopId)
-        {
-            string msg = null;
-
-            var shopPricePerHour = repo.All<AutoShop>()
-                .Where(x => x.Id == shopId)
-                .Select(x => x.PricePerHour)
-                .FirstOrDefault();
-
-            var service = new ShopService()
-            {
-                Name = model.Name,
-                NeededHourOfWork = model.NeededHourOfWork,
-                OfferId = Guid.Parse(model.offerId),
-                Type = model.Type,
-                PricePerHouer = shopPricePerHour,
-                Price = shopPricePerHour * (decimal)model.NeededHourOfWork
-            };
-
-            try
-            {
-                repo.Add(service);
-                repo.SaveChanges();
-            }
-            catch (Exception)
-            {
-                msg = "Error";
-                throw;
-            }
-            return msg;
         }
 
         public async Task<IEnumerable<ViewIssueModel>> GetIssues(string userId)
