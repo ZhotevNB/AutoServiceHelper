@@ -63,20 +63,20 @@ namespace AutoServiceHelper.Core.Services
             return allCars;
         }
 
-        public string AddIssue(AddIssueFormModel model, string carId, string userId)
+        public async Task<string> AddIssue(AddIssueFormModel model, string carId, string userId)
         {
-            var milage = repository.All<Issue>()
+            var milage =  await repository.All<Issue>()
                  .Where(x => x.CarId == carId)
                    .OrderByDescending(x => x.SubmitionDate.Date)
                  .OrderByDescending(x => x.SubmitionDate.Hour)
                  .OrderByDescending(x => x.SubmitionDate.Minute)
                  .Select(x => x.CarOdometer)
-                 .FirstOrDefault();
+                 .FirstOrDefaultAsync();
 
             if (milage > model.CarOdometer)
             {
 
-                return "Invalid Operation";
+                return "Milage are less than the previos issue";
             }
             repository.Add<Issue>(new Issue
             {
@@ -90,9 +90,9 @@ namespace AutoServiceHelper.Core.Services
             return carId;
         }
 
-        public IEnumerable<ViewIssueModel> ViewIssues(string id)
+        public async Task<IEnumerable<ViewIssueModel>> ViewIssues(string id)
         {
-            var car = repository.All<Car>().Where(c => c.Id == id).Select(c => new CarViewModel
+            var car = await repository.All<Car>().Where(c => c.Id == id).Select(c => new CarViewModel
             {
                 Manifacture = c.Manifacture,
                 Model = c.Model,
@@ -101,9 +101,9 @@ namespace AutoServiceHelper.Core.Services
                 Vin = c.Vin,
                 Id = c.Id,
                 UserId = c.UserId
-            }).First();
+            }).FirstAsync();
 
-            var issues = repository.All<Issue>()
+            var issues =  await repository.All<Issue>()
                 .Where(i => i.CarId == id)
                 .Select(i => new ViewIssueModel
                 {
@@ -122,7 +122,7 @@ namespace AutoServiceHelper.Core.Services
                 .OrderByDescending(x => x.SubmitionDate.Date)
                 .OrderByDescending(x => x.SubmitionDate.Hour)
                 .OrderByDescending(x => x.SubmitionDate.Minute)
-                .ToList();
+                .ToListAsync();
 
             return issues;
         }
@@ -168,11 +168,11 @@ namespace AutoServiceHelper.Core.Services
             return Enum.GetNames(typeof(TypeActivity)).ToList();
         }
 
-        public void FixIssue(string issueId)
+        public async Task FixIssue(string issueId)
         {
-            var issue = repository.All<Issue>()
+            var issue = await repository.All<Issue>()
                 .Where(x => x.Id.ToString() == issueId)
-                .First();
+                .FirstAsync();
 
             issue.isFixed = true;
 

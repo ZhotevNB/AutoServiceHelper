@@ -67,9 +67,9 @@ namespace AutoServiceHelper.Controllers
             return View(result);
         }
 
-        public IActionResult Issues(string carId)
+        public async Task<IActionResult> Issues(string carId)
         {
-            var model = carServices.ViewIssues(carId);
+            var model = await carServices.ViewIssues(carId);
 
             return View(model);
         }
@@ -112,10 +112,10 @@ namespace AutoServiceHelper.Controllers
             var user = await userManager.GetUserAsync(User);
             var userId = await userManager.GetUserIdAsync(user);
 
-            var result=carServices.AddIssue(carIssue,carId, userId);
-            if (result== "Invalid Operation")
+            var result= await carServices.AddIssue(carIssue,carId, userId);
+            if (result== "Milage are less than the previos issue")
             {
-                //must hapand somting to inform user the operation was not succsesful
+                ViewData["ErrorMessage"] = result;
                 var model = carServices.GetIssueTypes();
                 var Issue = new AddIssueFormModel()
                 {
@@ -126,9 +126,9 @@ namespace AutoServiceHelper.Controllers
             return RedirectToAction("MyCars");
         }
 
-        public IActionResult FixIssue(string issueId)
+        public async Task <IActionResult> FixIssue(string issueId)
         {
-            carServices.FixIssue(issueId);
+           await carServices.FixIssue(issueId);
             return RedirectToAction("MyCars");
         }
 
