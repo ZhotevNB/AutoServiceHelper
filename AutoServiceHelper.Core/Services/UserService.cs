@@ -43,8 +43,8 @@ namespace AutoServiceHelper.Core.Services
             }
             catch (Exception)
             {
-                result = "Неуспешен запис ";
-                throw;
+                result = "Неуспешен запис";
+                throw new InvalidOperationException(result);
             }
 
             return result;
@@ -86,7 +86,7 @@ namespace AutoServiceHelper.Core.Services
             catch (Exception)
             {
                 result = "Възникна грешка при Записа";
-                throw;
+                throw new InvalidOperationException(result);
             }
 
             return result;
@@ -107,23 +107,7 @@ namespace AutoServiceHelper.Core.Services
             return users;
 
         }
-
-        public async Task<UserChangeRollViewModel> GetUserInfoById()
-        {
-            var users = await repository
-                .All<UserInfo>()
-                .Select(u => new UserChangeRollViewModel
-                {
-                    Id = u.UserId,
-                    Name = $"{u.FirstName} {u.LastName}",
-                    WantToBeManager = u.AskToChangeRollManager,
-                    WantToBeMechanic = u.AskToChangeRollMechanic
-                }).FirstAsync();
-
-            return users;
-
-        }
-
+      
         public async Task<UsersSetingsFormModel> GetUserInfo(string userId)
         {
             var respons = await repository.All<UserInfo>()
@@ -149,8 +133,7 @@ namespace AutoServiceHelper.Core.Services
             var respons = await repository.All<IdentityUser>()
                    .Where(x => x.Id == userId)
                    .FirstOrDefaultAsync();
-
-            return respons;
+               return respons;
         }
 
         public async Task<UserContactInfoModel> GetUserContactInfo(string userId)

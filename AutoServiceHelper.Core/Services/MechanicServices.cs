@@ -26,29 +26,30 @@ namespace AutoServiceHelper.Core.Services
             var remov = repo.All<MechanicActivity>()
                 .Where(x => x.MechanicId == model.UserId)
                 .ToList();
-
-            foreach (var item in remov)
-            {
-                repo.Delete(item);
-            }
-
-            foreach (var item in model.ActivityIds)
-            {
-                repo.Add(new MechanicActivity()
+                foreach (var item in remov)
                 {
-                    ActivityId = item,
-                    MechanicId = model.UserId
-
-                });
-            }
+                    repo.Delete(item);
+                   
+                }
             try
             {
+
+                foreach (var item in model.ActivityIds)
+                {
+                    repo.Add(new MechanicActivity()
+                    {
+                        ActivityId = item,
+                        MechanicId = model.UserId
+
+                    });
+                }
+
                 repo.SaveChanges();
             }
             catch (Exception)
             {
                 result = "unsuccessful record";
-                throw;
+                throw new InvalidOperationException("Could not update DB");
             }
             return result;
         }
@@ -76,9 +77,9 @@ namespace AutoServiceHelper.Core.Services
 
 
             var orders = await repo.All<Order>()
-                .Where(x => x.Offer.ShopId == shopId.ToString()             
+                .Where(x => x.Offer.ShopId == shopId.ToString()
             && (x.Status == OrderStatus.WaitingForMechanic)
-            && x.MechanicId==null
+            && x.MechanicId == null
                 )
                 .Select(x => new OrderViewModel()
                 {
@@ -135,19 +136,19 @@ namespace AutoServiceHelper.Core.Services
 
                 })
                 .ToListAsync();
-           orders = orders
-                .Where(x => types.Any(t => t == x.Issue.Type))
-                .ToList();
-            
+            orders = orders
+                 .Where(x => types.Any(t => t == x.Issue.Type))
+                 .ToList();
+
             return orders;
         }
 
         public async Task<IEnumerable<OrderViewModel>> GetMyOrders(string userId)
         {
-           
+
 
             var orders = await repo.All<Order>()
-                .Where(x=>x.MechanicId==userId)
+                .Where(x => x.MechanicId == userId)
                 .Select(x => new OrderViewModel()
                 {
                     Id = x.Id,
@@ -203,7 +204,7 @@ namespace AutoServiceHelper.Core.Services
 
                 })
                 .ToListAsync();
-            
+
             return orders;
         }
 
@@ -232,13 +233,13 @@ namespace AutoServiceHelper.Core.Services
         {
             string result = null;
 
-            var order =  await repo.All<Order>()
+            var order = await repo.All<Order>()
                 .Where(o => o.Id.ToString() == orderId)
-                .FirstOrDefaultAsync();           
+                .FirstOrDefaultAsync();
 
-            order.MechanicId=userId;
+            order.MechanicId = userId;
             order.Status = OrderStatus.InProgress;
-           
+
 
             try
             {
@@ -256,9 +257,12 @@ namespace AutoServiceHelper.Core.Services
         public async Task<string> CompleteOrder(string orderId)
         {
             string result = null;
+            var orderIdGuid = Guid.Parse(orderId);
 
+            try
+            {
             var order = await repo.All<Order>()
-                .Where(x => x.Id.ToString() == orderId)
+                .Where(x => x.Id == orderIdGuid)
                 .FirstOrDefaultAsync();
 
             order.Status = OrderStatus.Compled;
@@ -267,20 +271,18 @@ namespace AutoServiceHelper.Core.Services
                 .Where(x => x.Id == order.IssueId)
                 .FirstOrDefaultAsync();
 
-            issue.Status=IssueStatus.Completed;
+            issue.Status = IssueStatus.Completed;
             issue.isFixed = true;
 
-            try
-            {
                 repo.SaveChanges();
                 result = "Successfull complete Order";
             }
             catch (Exception)
             {
-                result="Error"; 
-                throw;
+                result = "Error";
+                throw new InvalidOperationException("Error");
             }
-           return result;
+            return result;
         }
     }
 }

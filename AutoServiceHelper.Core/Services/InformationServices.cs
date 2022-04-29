@@ -16,21 +16,20 @@ namespace AutoServiceHelper.Core.Services
     public class InformationServices:IInformationServices
     {
         private readonly IRepository repo;
-        private readonly UserManager<IdentityUser> userManager;
+     
 
 
-        public InformationServices(IRepository _repo,
-            UserManager<IdentityUser> _userManager)
+        public InformationServices(IRepository _repo)
         {
-            repo = _repo;
-            userManager = _userManager;
-
+            repo = _repo;           
+            
         }
         public async Task<IEnumerable<ServiceViewModel>> GetServicesForOffer(string offerId)
         {
+            var offerIdGuid = Guid.Parse(offerId);
 
             var result = await repo.All<ShopService>()
-                .Where(x => x.OfferId.ToString() == offerId)
+                .Where(x => x.OfferId == offerIdGuid)
                 .Select(x => new ServiceViewModel()
                 {
                     Name = x.Name,
@@ -56,8 +55,10 @@ namespace AutoServiceHelper.Core.Services
 
         public async Task<IEnumerable<PartsViewModel>> GetPartsForService(string serviceId)
         {
+            var serviceIdGuid = Guid.Parse(serviceId);
+
             return await repo.All<Part>()
-                .Where(x => x.ShopServiceId.ToString() == serviceId)
+                .Where(x => x.ShopServiceId == serviceIdGuid)
                 .Select(x => new PartsViewModel
                 {
                     Name = x.Name,
@@ -71,8 +72,10 @@ namespace AutoServiceHelper.Core.Services
 
         public async Task<string>GetIssueIdByOfferId(string offerId)
         {
+            var offerIdGuid = Guid.Parse(offerId);
+
             var issueId = await repo.All<Offer>()
-                .Where(x => x.Id.ToString() == offerId)
+                .Where(x => x.Id == offerIdGuid)
                 .Select(x => x.IssueId)
                 .FirstOrDefaultAsync();
 

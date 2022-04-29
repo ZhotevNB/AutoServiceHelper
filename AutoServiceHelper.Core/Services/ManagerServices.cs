@@ -72,7 +72,7 @@ namespace AutoServiceHelper.Core.Services
             catch (Exception)
             {
                 result = "Възникна грешка при Записа";
-                throw;
+                throw new InvalidDataException("Could not update DB");
             }
 
             return result;

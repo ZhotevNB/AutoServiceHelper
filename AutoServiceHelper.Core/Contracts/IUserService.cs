@@ -7,17 +7,15 @@ namespace AutoServiceHelper.Core.Contracts
     {
            
 
-        public Task <string>ChangeUserInfo(string userId,UsersSetingsFormModel model);//used
+        public Task <string>ChangeUserInfo(string userId,UsersSetingsFormModel model);
 
         public Task<string> ChangeUserContactInfo(string userId, UserContactInfoModel model);
 
-        public Task<UsersSetingsFormModel> GetUserInfo(string userId);//used
+        public Task<UsersSetingsFormModel> GetUserInfo(string userId);
 
-        public Task<IEnumerable<UserChangeRollViewModel>> GetUsers();//used
+        public Task<IEnumerable<UserChangeRollViewModel>> GetUsers();       
 
-        public Task<UserChangeRollViewModel> GetUserInfoById();
-
-        public Task<UserContactInfoModel> GetUserContactInfo(string userId);//used
+        public Task<UserContactInfoModel> GetUserContactInfo(string userId);
 
         public  Task<IdentityUser> GetUserById(string userId);
 
